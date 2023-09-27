@@ -1,4 +1,4 @@
-package com.mycompany.plugins.example;
+package com.example.plugin.nrfdfu;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
@@ -6,10 +6,10 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
-@CapacitorPlugin(name = "Example")
-public class ExamplePlugin extends Plugin {
+@CapacitorPlugin(name = "NordicDfu")
+public class NordicDfuPlugin extends Plugin {
 
-    private Example implementation = new Example();
+    private NordicDfu implementation = new NordicDfu();
 
     @PluginMethod
     public void echo(PluginCall call) {

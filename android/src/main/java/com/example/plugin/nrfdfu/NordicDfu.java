@@ -1,8 +1,8 @@
-package com.mycompany.plugins.example;
+package com.example.plugin.nrfdfu;
 
 import android.util.Log;
 
-public class Example {
+public class NordicDfu {
 
     public String echo(String value) {
         Log.i("Echo", value);
