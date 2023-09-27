@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "adam-bender.commit-message-editor",
+    "angular.ng-template",
+    "eamodio.gitlens",
+    "esbenp.prettier-vscode",
+    "gruntfuggly.todo-tree",
+    "ionic.ionic",
+    "streetsidesoftware.code-spell-checker"
+  ]
+}

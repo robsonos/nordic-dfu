@@ -1,7 +1,7 @@
 {
-  "name": "nordic-dfu",
+  "name": "@capacitor-community/nordic-dfu",
   "version": "0.0.1",
-  "description": "Nordic DFU OTA integrration for Capacitor",
+  "description": "Nordic DFU OTA integration for Capacitor",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -15,17 +15,25 @@
   ],
   "author": "Robson Oliveira dos Santos",
   "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/robsonos/nordic-dfu.git"
+    "url": "git+https://github.com/capacitor-community/nordic-dfu.git"
   },
   "bugs": {
-    "url": "https://github.com/robsonos/nordic-dfu/issues"
+    "url": "https://github.com/capacitor-community/nordic-dfu/issues"
   },
   "keywords": [
     "capacitor",
     "plugin",
-    "native"
+    "native",
+    "Nordic",
+    "bluetooth",
+    "nRF",
+    "OTA",
+    "BLE"
   ],
   "scripts": {
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
@@ -33,21 +41,22 @@
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "npm run build",
     "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
-    "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- --fix --format",
+    "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- autocorrect --format",
     "eslint": "eslint . --ext ts",
     "prettier": "prettier \"**/*.{css,html,ts,js,java}\"",
     "swiftlint": "node-swiftlint",
-    "docgen": "docgen --api ExamplePlugin --output-readme README.md --output-json dist/docs.json",
+    "docgen": "docgen --api ExamplePlugin --output-readme docs/API.md --output-json dist/docs.json",
     "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
+    "test": "echo \"No test specified\"",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@capacitor/android": "^5.0.0",
-    "@capacitor/core": "^5.0.0",
-    "@capacitor/docgen": "^0.0.18",
-    "@capacitor/ios": "^5.0.0",
+    "@capacitor/android": "^5.3.0",
+    "@capacitor/core": "^5.3.0",
+    "@capacitor/docgen": "^0.0.17",
+    "@capacitor/ios": "^5.3.0",
     "@ionic/eslint-config": "^0.3.0",
     "@ionic/prettier-config": "^1.0.1",
     "@ionic/swiftlint-config": "^1.1.2",
