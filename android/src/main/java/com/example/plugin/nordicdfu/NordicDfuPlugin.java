@@ -1,4 +1,4 @@
-package com.example.plugin.nrfdfu;
+package com.example.plugin.nordicdfu;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;

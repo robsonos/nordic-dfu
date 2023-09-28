@@ -1,13 +1,10 @@
-import { SplashScreen } from '@capacitor/splash-screen';
-import { Camera } from '@capacitor/camera';
+import { NordicDfu } from '@capacitor-community/nordic-dfu';
 
 window.customElements.define(
   'capacitor-welcome',
   class extends HTMLElement {
     constructor() {
       super();
-
-      SplashScreen.hide();
 
       const root = this.attachShadow({ mode: 'open' });
 
@@ -42,48 +39,17 @@ window.customElements.define(
         text-transform: uppercase;
         letter-spacing: 1px;
       }
-      main h2 {
-        font-size: 1.1em;
-      }
-      main h3 {
-        font-size: 0.9em;
-      }
-      main p {
-        color: #333;
-      }
-      main pre {
-        white-space: pre-line;
-      }
     </style>
     <div>
       <capacitor-welcome-titlebar>
-        <h1>Capacitor</h1>
+        <h1>Nordic DFU Plugin Test</h1>
       </capacitor-welcome-titlebar>
       <main>
+        <h2>Nordic DFU Test</h2>
         <p>
-          Capacitor makes it easy to build powerful apps for the app stores, mobile web (Progressive Web Apps), and desktop, all
-          with a single code base.
+            <button class="button" id="test-dfu">Test DFU Echo</button>
         </p>
-        <h2>Getting Started</h2>
-        <p>
-          You'll probably need a UI framework to build a full-featured app. Might we recommend
-          <a target="_blank" href="http://ionicframework.com/">Ionic</a>?
-        </p>
-        <p>
-          Visit <a href="https://capacitorjs.com">capacitorjs.com</a> for information
-          on using native features, building plugins, and more.
-        </p>
-        <a href="https://capacitorjs.com" target="_blank" class="button">Read more</a>
-        <h2>Tiny Demo</h2>
-        <p>
-          This demo shows how to call Capacitor plugins. Say cheese!
-        </p>
-        <p>
-          <button class="button" id="take-photo">Take Photo</button>
-        </p>
-        <p>
-          <img id="image" style="max-width: 100%">
-        </p>
+        <p id="dfu-result"></p>
       </main>
     </div>
     `;
@@ -92,24 +58,22 @@ window.customElements.define(
     connectedCallback() {
       const self = this;
 
-      self.shadowRoot.querySelector('#take-photo').addEventListener('click', async function (e) {
-        try {
-          const photo = await Camera.getPhoto({
-            resultType: 'uri',
-          });
-
-          const image = self.shadowRoot.querySelector('#image');
-          if (!image) {
-            return;
+      self.shadowRoot
+        .querySelector('#test-dfu')
+        .addEventListener('click', async function (e) {
+          try {
+            const result = await NordicDfu.echo({ value: 'Test Value' });
+            const dfuResultElement =
+              self.shadowRoot.querySelector('#dfu-result');
+            if (dfuResultElement) {
+              dfuResultElement.textContent = 'Echoed Value: ' + result.value;
+            }
+          } catch (e) {
+            console.warn('DFU Test failed', e);
           }
-
-          image.src = photo.webPath;
-        } catch (e) {
-          console.warn('User cancelled', e);
-        }
-      });
+        });
     }
-  }
+  },
 );
 
 window.customElements.define(
@@ -138,5 +102,5 @@ window.customElements.define(
     <slot></slot>
     `;
     }
-  }
+  },
 );

@@ -1,5 +1,5 @@
 {
-  "appId": "com.example.plugin.nrfdfu",
+  "appId": "com.example.plugin.nordicdfu",
   "appName": "example",
   "bundledWebRuntime": false,
   "webDir": "dist",

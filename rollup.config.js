@@ -4,7 +4,7 @@ export default {
     {
       file: 'dist/plugin.js',
       format: 'iife',
-      name: 'capacitorExample',
+      name: 'NordicDfu',
       globals: {
         '@capacitor/core': 'capacitorExports',
       },

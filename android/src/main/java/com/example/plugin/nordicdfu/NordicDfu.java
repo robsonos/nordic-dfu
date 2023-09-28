@@ -1,4 +1,4 @@
-package com.example.plugin.nrfdfu;
+package com.example.plugin.nordicdfu;
 
 import android.util.Log;
 

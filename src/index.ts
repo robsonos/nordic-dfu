@@ -1,10 +1,10 @@
 import { registerPlugin } from '@capacitor/core';
 
-import type { ExamplePlugin } from './definitions';
+import type { NordicDfuPlugin } from './definitions';
 
-const Example = registerPlugin<ExamplePlugin>('Example', {
-  web: () => import('./web').then(m => new m.ExampleWeb()),
+const NordicDfu = registerPlugin<NordicDfuPlugin>('NordicDfu', {
+  web: () => import('./web').then(m => new m.NordicDfuWeb()),
 });
 
 export * from './definitions';
-export { Example };
+export { NordicDfu };
