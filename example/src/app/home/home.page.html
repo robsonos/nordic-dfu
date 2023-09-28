@@ -1,0 +1,11 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Nordic DFU example </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-button (click)="testDfu()">Test DFU Echo</ion-button>
+  <br />
+  <ion-text> {{ echoResult }} </ion-text>
+</ion-content>

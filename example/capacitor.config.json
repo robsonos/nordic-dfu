@@ -2,10 +2,11 @@
   "appId": "com.example.plugin.nordicdfu",
   "appName": "example",
   "bundledWebRuntime": false,
-  "webDir": "dist",
+  "webDir": "www",
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 0
     }
-  }
+  },
+  "cordova": {}
 }
