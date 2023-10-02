@@ -2,8 +2,11 @@
 include ':capacitor-android'
 project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/capacitor')
 
+include ':capacitor-community-bluetooth-le'
+project(':capacitor-community-bluetooth-le').projectDir = new File('../node_modules/@capacitor-community/bluetooth-le/android')
+
 include ':capacitor-community-nordic-dfu'
-project(':capacitor-community-nordic-dfu').projectDir = new File('../../android')
+project(':capacitor-community-nordic-dfu').projectDir = new File('../node_modules/@capacitor-community/nordic-dfu/android')
 
 include ':capacitor-app'
 project(':capacitor-app').projectDir = new File('../node_modules/@capacitor/app/android')

@@ -15,10 +15,6 @@
     "test": "ng test"
   },
   "dependencies": {
-    "@capacitor-community/nordic-dfu": "file:..",
-    "@capacitor/android": "^5.3.0",
-    "@capacitor/core": "^5.3.0",
-    "@capacitor/ios": "^5.3.0",
     "@angular/animations": "^16.0.0",
     "@angular/common": "^16.0.0",
     "@angular/compiler": "^16.0.0",
@@ -27,8 +23,13 @@
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
+    "@capacitor-community/bluetooth-le": "^3.0.1",
+    "@capacitor-community/nordic-dfu": "file:..",
+    "@capacitor/android": "^5.3.0",
     "@capacitor/app": "5.0.6",
+    "@capacitor/core": "^5.3.0",
     "@capacitor/haptics": "5.0.6",
+    "@capacitor/ios": "^5.3.0",
     "@capacitor/keyboard": "5.0.6",
     "@capacitor/status-bar": "5.0.6",
     "@ionic/angular": "^7.0.0",
@@ -38,7 +39,6 @@
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
-    "@capacitor/cli": "latest",
     "@angular-devkit/build-angular": "^16.0.0",
     "@angular-eslint/builder": "^16.0.0",
     "@angular-eslint/eslint-plugin": "^16.0.0",
@@ -48,6 +48,7 @@
     "@angular/cli": "^16.0.0",
     "@angular/compiler-cli": "^16.0.0",
     "@angular/language-service": "^16.0.0",
+    "@capacitor/cli": "latest",
     "@ionic/angular-toolkit": "^9.0.0",
     "@types/jasmine": "~4.3.0",
     "@types/node": "^12.11.1",

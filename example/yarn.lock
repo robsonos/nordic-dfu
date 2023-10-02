@@ -1345,6 +1345,13 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
+"@capacitor-community/bluetooth-le@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@capacitor-community/bluetooth-le/-/bluetooth-le-3.0.1.tgz#068362c4e7fbeb8dc83d8fa6c203a1201614d7c8"
+  integrity sha512-IRjurszsqKgvEiITmqEJnIAyJdPYkLf/45WaPKrCOP2c8bFYCrenBu2tdKXm8Vfh/d0ybpojK1kcEFj8M4z97w==
+  dependencies:
+    "@types/web-bluetooth" "^0.0.16"
+
 "@capacitor-community/nordic-dfu@file:..":
   version "0.0.1"
 
@@ -2303,6 +2310,11 @@
   integrity sha512-R+n7qBFnm/6jinlteC9DBL5dGiDGjWAvjo4viUanpnc/dG1y7uDoacXPIQ/PQEg1fI912SMHIa014ZjRpvDw4g==
   dependencies:
     "@types/node" "*"
+
+"@types/web-bluetooth@^0.0.16":
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/@types/web-bluetooth/-/web-bluetooth-0.0.16.tgz#1d12873a8e49567371f2a75fe3e7f7edca6662d8"
+  integrity sha512-oh8q2Zc32S6gd/j50GowEjKLoOVOwHP/bWVjKJInBwQqdOYMdPrf1oVlelTlyfFK3CKxL1uahMDAr+vy8T7yMQ==
 
 "@types/ws@^8.5.5":
   version "8.5.6"

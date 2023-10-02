@@ -5,7 +5,27 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-button (click)="testDfu()">Test DFU Echo</ion-button>
+  <ion-button expand="block" [disabled]="bluetoothIsScanning" (click)="scanForBluetoothDevices()">
+    {{ bluetoothIsScanning?"Scanning":"Scan for bluetooth devices" }}
+  </ion-button>
   <br />
-  <ion-text> {{ echoResult }} </ion-text>
+
+  <ion-grid>
+    <ion-list *ngIf="(scanResults$ | async) as scanResults; else noDevices">
+      <ion-item *ngFor="let scanResult  of scanResults">
+        <ion-label>
+          <h1>{{ scanResult.localName || 'Unknown' }}</h1>
+          <p>{{ scanResult.device.deviceId }}</p>
+          <p>{{ scanResult.rssi }}</p>
+        </ion-label>
+
+        <ion-button (click)="disconnectFromBluetoothDevice(scanResult)" color="danger" slot="end">
+          Disconnect
+        </ion-button>
+
+        <ion-button (click)="connectToBluetoothDevice(scanResult)" slot="end"> Connect </ion-button>
+      </ion-item>
+    </ion-list>
+    <ng-template #noDevices> No devices found.</ng-template>
+  </ion-grid>
 </ion-content>

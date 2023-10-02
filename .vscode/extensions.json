@@ -6,6 +6,8 @@
     "esbenp.prettier-vscode",
     "gruntfuggly.todo-tree",
     "ionic.ionic",
-    "streetsidesoftware.code-spell-checker"
+    "streetsidesoftware.code-spell-checker",
+    "vscjava.vscode-java-pack",
+    "mpotthoff.vscode-android-webview-debug"
   ]
 }
