@@ -24,6 +24,8 @@
         <ion-note slot="end">{{ scanResult.rssi }} db</ion-note>
       </ion-item>
     </ion-list>
-    <ng-template #noDevices> No devices found.</ng-template>
+    <ng-template #noDevices>
+      <ion-note color="medium" class="ion-margin-horizontal">No devices found.</ion-note>
+    </ng-template>
   </ion-grid>
 </ion-content>

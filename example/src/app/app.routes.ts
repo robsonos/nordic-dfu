@@ -8,7 +8,7 @@ export const routes: Routes = [
   {
     path: 'device',
     loadComponent: () =>
-      import('./scan/device-overview/device-overview.page').then((m) => m.DeviceOverviewPageComponent),
+      import('./scan/device-information/device-information.page').then((m) => m.DeviceInformationPageComponent),
   },
   {
     path: '',

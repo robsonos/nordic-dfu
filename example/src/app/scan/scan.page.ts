@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 import { CommonModule } from '@angular/common';
 import { Component, Inject, NgZone } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import type { BleDevice, ScanResult } from '@capacitor-community/bluetooth-le';
 import { BleClient, ScanMode } from '@capacitor-community/bluetooth-le';
 import { IonicModule } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { scan } from 'rxjs/operators';
 
+import { StatusBarService } from '../services/status-bar.service';
 import { ToastService } from '../services/toast.service';
 import { CONSTANTS } from '../shared/constants';
 
@@ -30,9 +31,16 @@ export class ScanPageComponent {
     }, [])
   );
 
-  constructor(@Inject(NgZone) private ngZone: NgZone, private router: Router, private toastService: ToastService) {}
+  constructor(
+    @Inject(NgZone) private ngZone: NgZone,
+    private statusBarService: StatusBarService,
+    private toastService: ToastService
+  ) {}
 
   async ionViewWillEnter() {
+    this.statusBarService.setStatusBarStyleDark();
+    this.statusBarService.showStatusBar();
+
     await BleClient.initialize();
 
     const isEnabled = await BleClient.isEnabled();

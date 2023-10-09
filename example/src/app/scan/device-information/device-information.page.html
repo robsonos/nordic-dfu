@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="secondary">
-    <ion-title>Device details</ion-title>
+    <ion-title>Device information</ion-title>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
@@ -8,6 +8,23 @@
 </ion-header>
 
 <ion-content>
+  <ion-list inset *ngIf="(deviceInformation$ | async) as deviceInformation; else noDeviceInformation">
+    <ion-item>
+      <ion-label><strong>Model number: </strong>{{ deviceInformation.modelNumber }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label><strong>Serial number: </strong>{{ deviceInformation.serialNumber }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label><strong>Firmware version: </strong>{{ deviceInformation.firmwareVersion }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label><strong>Hardware version: </strong>{{ deviceInformation.hardwareVersion }}</ion-label>
+    </ion-item>
+  </ion-list>
+  <ng-template #noDeviceInformation>
+    <ion-note color="medium" class="ion-margin-horizontal">No device information found.</ion-note>
+  </ng-template>
   <!-- <br />
   <ion-button expand="block" (click)="updateFirmware()"> Update Firmware </ion-button>
   <br />
