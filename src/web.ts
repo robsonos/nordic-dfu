@@ -1,10 +1,10 @@
+import type { PluginResultError } from '@capacitor/core';
 import { WebPlugin } from '@capacitor/core';
 
-import type { NordicDfuPlugin } from './definitions';
+import type { IDfuUpdateOptions, NordicDfuPlugin } from './definitions';
 
 export class NordicDfuWeb extends WebPlugin implements NordicDfuPlugin {
-  async echo(options: { value: string }): Promise<{ value: string }> {
-    console.log('ECHO', options);
-    return options;
+  startDFU(_dfuUpdateOptions: IDfuUpdateOptions): Promise<void | PluginResultError> {
+    throw this.unavailable('Method not available in this browser.');
   }
 }

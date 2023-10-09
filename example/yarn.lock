@@ -1395,6 +1395,11 @@
   dependencies:
     tslib "^2.1.0"
 
+"@capacitor/filesystem@^5.1.4":
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/@capacitor/filesystem/-/filesystem-5.1.4.tgz#6e3278f4c47c72416d586367889736b576113ef5"
+  integrity sha512-10EM1KvFMs+pTzxkcflspzxBWcX9sOnS9nTP5Afjr5hn4OxLrwTFySw2Z12Uv6jdN4OnhY3jXtDKXPljXvXILg==
+
 "@capacitor/haptics@5.0.6":
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/@capacitor/haptics/-/haptics-5.0.6.tgz#c22fd6acbc62cbdff39279ded687c418f2c89a5a"
@@ -1414,6 +1419,11 @@
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/@capacitor/status-bar/-/status-bar-5.0.6.tgz#281568a7f7aeacf80777702cb9947c29dc32685c"
   integrity sha512-7od8CxsBnot1XMK3IeOkproFL4hgoKoWAc3pwUvmDOkQsXoxwQm4SR9mLwQavv1XfxtHbFV9Ukd7FwMxOPSViw==
+
+"@capawesome/capacitor-file-picker@^5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@capawesome/capacitor-file-picker/-/capacitor-file-picker-5.1.1.tgz#625437ebd621af150101e285b6dc4ef43bd0e857"
+  integrity sha512-VtWV/er8Kux5Bbb0BtRneAaL8aj7zKoSPSR5sn3QlVBccete+CX+nH3scg6JKrogoitNP35PS33LIoaz9WVZiA==
 
 "@colors/colors@1.5.0":
   version "1.5.0"

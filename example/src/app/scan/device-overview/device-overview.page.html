@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>Device details</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- <br />
+  <ion-button expand="block" (click)="updateFirmware()"> Update Firmware </ion-button>
+  <br />
+  <ion-button expand="block" (click)="pickFile()">Pick Files</ion-button>
+  <br /> -->
+
+  <!-- <ion-card *ngIf="file">
+    <ion-card-content>
+      <ion-item> <ion-label>Name</ion-label>{{ file.name }}</ion-item>
+      <ion-item> <ion-label>Path</ion-label>{{ file.path }}</ion-item>
+      <ion-item> <ion-label>Mime Type</ion-label>{{ file.mimeType }}</ion-item>
+      <ion-item> <ion-label>Size</ion-label>{{ file.size }}</ion-item>
+    </ion-card-content>
+  </ion-card> -->
+
+  <ion-grid>
+    <!-- <ion-list *ngIf="(scanResults$ | async) as scanResults; else noDevices">
+      <ion-item *ngFor="let scanResult  of scanResults">
+        <ion-label>
+          <h1>{{ scanResult.localName || 'Unknown' }}</h1>
+          <p>{{ scanResult.device.deviceId }}</p>
+          <p>{{ scanResult.rssi }}</p>
+        </ion-label>
+
+        <ion-button (click)="disconnectFromBluetoothDevice(scanResult)" color="danger" slot="end">
+          Disconnect
+        </ion-button>
+
+        <ion-button (click)="connectToBluetoothDevice(scanResult)" slot="end"> Connect </ion-button>
+      </ion-item>
+    </ion-list>
+    <ng-template #noDevices> No devices found.</ng-template> -->
+  </ion-grid>
+</ion-content>

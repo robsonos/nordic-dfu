@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nordic DFU example</ion-title>
+    <ion-progress-bar *ngIf="scanProgress > 0" [value]="scanProgress"></ion-progress-bar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button expand="block" [disabled]="bluetoothIsScanning" (click)="scanForBluetoothDevices()">
+    {{ bluetoothIsScanning ? "Scanning" : "Scan" }}
+  </ion-button>
+
+  <ion-grid>
+    <ion-list *ngIf="(scanResults$ | async) as scanResults; else noDevices">
+      <ion-item
+        *ngFor="let scanResult  of scanResults"
+        (click)="stopScanForBluetoothDevices()"
+        [routerLink]="['/device']"
+        [state]="{ device: scanResult}"
+        button
+      >
+        <ion-icon color="primary" slot="start" [src]="getRssiIcon(scanResult.rssi || -90)" size="large"></ion-icon>
+        <ion-label> {{ scanResult.localName || 'Unknown' }} </ion-label>
+        <ion-note slot="end">{{ scanResult.rssi }} db</ion-note>
+      </ion-item>
+    </ion-list>
+    <ng-template #noDevices> No devices found.</ng-template>
+  </ion-grid>
+</ion-content>
