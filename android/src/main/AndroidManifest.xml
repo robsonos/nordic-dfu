@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.plugin.nordicdfu">
     <application>
-        <service android:name=".DfuService"/>
+        <service android:name=".DfuService"/>        
+        <activity android:name=".NotificationActivity"/>
     </application>
 </manifest>

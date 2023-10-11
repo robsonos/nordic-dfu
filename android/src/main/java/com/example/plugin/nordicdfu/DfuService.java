@@ -1,6 +1,9 @@
 package com.example.plugin.nordicdfu;
 
 import android.app.Activity;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import no.nordicsemi.android.dfu.BuildConfig;
 import no.nordicsemi.android.dfu.DfuBaseService;
 
 public class DfuService extends DfuBaseService {
@@ -33,6 +36,11 @@ public class DfuService extends DfuBaseService {
         // Here return true if you want the service to print more logs in LogCat.
         // Library's BuildConfig in current version of Android Studio is always set to DEBUG=false, so
         // make sure you return true or your.app.BuildConfig.DEBUG here.
-        return true;
+        return BuildConfig.DEBUG;
+    }
+
+    @Override
+    protected void updateForegroundNotification(@NonNull final NotificationCompat.Builder builder) {
+        // Customize the foreground service notification here.
     }
 }

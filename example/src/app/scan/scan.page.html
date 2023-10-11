@@ -15,7 +15,7 @@
       <ion-item
         *ngFor="let scanResult  of scanResults"
         (click)="stopScanForBluetoothDevices()"
-        [routerLink]="['/device']"
+        [routerLink]="['/dfu']"
         [state]="{ device: scanResult}"
         button
       >

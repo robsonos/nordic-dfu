@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.List;
 import no.nordicsemi.android.dfu.DfuBaseService;
 import no.nordicsemi.android.dfu.DfuProgressListener;
+import no.nordicsemi.android.dfu.DfuProgressListenerAdapter;
 import no.nordicsemi.android.dfu.DfuServiceController;
 import no.nordicsemi.android.dfu.DfuServiceInitiator;
 import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
@@ -50,78 +51,89 @@ import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
 )
 public class NordicDfuPlugin extends Plugin {
 
-    private static final String name = "NordicDfuPlugin";
-    public static final String LOG_TAG = name;
-    private final String dfuStateEvent = "DFUStateChanged";
-    private final String progressEvent = "DFUProgress";
-    private PluginCall savedCall;
-    private String[] aliases;
+    private NordicDfu implementation;
+    public static final String DFU_CHANGE_EVENT = "DFUStateChanged";
+    public static final String LOG_TAG = NordicDfuPlugin.class.getSimpleName();
 
-    @PluginMethod
-    public void initialize(PluginCall call) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // 31 is Android 12 (S)
-            boolean neverForLocation = call.getBoolean("androidNeverForLocation", false);
-            if (neverForLocation) {
-                aliases = new String[] { "BLUETOOTH_SCAN", "BLUETOOTH_CONNECT", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE" };
-            } else {
-                aliases =
-                    new String[] {
-                        "BLUETOOTH_SCAN",
-                        "BLUETOOTH_CONNECT",
-                        "ACCESS_FINE_LOCATION",
-                        "READ_EXTERNAL_STORAGE",
-                        "WRITE_EXTERNAL_STORAGE"
-                    };
-            }
-        } else {
-            aliases =
-                new String[] {
-                    "ACCESS_COARSE_LOCATION",
-                    "ACCESS_FINE_LOCATION",
-                    "BLUETOOTH",
-                    "BLUETOOTH_ADMIN",
-                    "READ_EXTERNAL_STORAGE",
-                    "WRITE_EXTERNAL_STORAGE"
-                };
-        }
-        requestPermissionForAliases(aliases, call, "checkPermission");
-    }
+    // private String[] aliases;
 
-    @PermissionCallback
-    private void checkPermission(PluginCall call) {
-        List<Boolean> granted = new ArrayList<>();
-        for (String alias : aliases) {
-            granted.add(getPermissionState(alias) == PermissionState.GRANTED);
-        }
+    // /**
+    //  * Clean up callback to prevent leaks.
+    //  */
+    // @Override
+    // protected void handleOnDestroy() {
+    //     implementation.setStatusChangeListener(null);
+    // }
 
-        // Check if all permissions are granted
-        if (!granted.contains(false)) {
-            runInitialization(call);
-        } else {
-            call.reject("Permission denied.");
-        }
-    }
+    // @PluginMethod
+    // public void initialize(PluginCall call) {
+    //     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // 31 is Android 12 (S)
+    //         boolean neverForLocation = call.getBoolean("androidNeverForLocation", false);
+    //         if (neverForLocation) {
+    //             aliases = new String[] { "BLUETOOTH_SCAN", "BLUETOOTH_CONNECT", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE" };
+    //         } else {
+    //             aliases =
+    //                 new String[] {
+    //                     "BLUETOOTH_SCAN",
+    //                     "BLUETOOTH_CONNECT",
+    //                     "ACCESS_FINE_LOCATION",
+    //                     "READ_EXTERNAL_STORAGE",
+    //                     "WRITE_EXTERNAL_STORAGE"
+    //                 };
+    //         }
+    //     } else {
+    //         aliases =
+    //             new String[] {
+    //                 "ACCESS_COARSE_LOCATION",
+    //                 "ACCESS_FINE_LOCATION",
+    //                 "BLUETOOTH",
+    //                 "BLUETOOTH_ADMIN",
+    //                 "READ_EXTERNAL_STORAGE",
+    //                 "WRITE_EXTERNAL_STORAGE"
+    //             };
+    //     }
+    //     requestPermissionForAliases(aliases, call, "checkPermission");
+    // }
+    //
+    // @PermissionCallback
+    // private void checkPermission(PluginCall call) {
+    //     List<Boolean> granted = new ArrayList<>();
+    //     for (String alias : aliases) {
+    //         granted.add(getPermissionState(alias) == PermissionState.GRANTED);
+    //     }
+    //
+    //     // Check if all permissions are granted
+    //     if (!granted.contains(false)) {
+    //         runInitialization(call);
+    //     } else {
+    //         call.reject("Permission denied.");
+    //     }
+    // }
+    //
+    // private void runInitialization(PluginCall call) {
+    //     if (!getBridge().getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+    //         call.reject("BLE is not supported.");
+    //         return;
+    //     }
+    //
+    //     BluetoothManager bluetoothManager = (BluetoothManager) getBridge().getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
+    //     BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+    //
+    //     if (bluetoothAdapter == null) {
+    //         call.reject("BLE is not available.");
+    //         return;
+    //     }
+    //     call.resolve();
+    // }
 
-    private void runInitialization(PluginCall call) {
-        if (!getBridge().getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            call.reject("BLE is not supported.");
-            return;
-        }
-
-        BluetoothManager bluetoothManager = (BluetoothManager) getBridge().getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-        BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
-
-        if (bluetoothAdapter == null) {
-            call.reject("BLE is not available.");
-            return;
-        }
-        call.resolve();
+    @Override
+    public void load() {
+        implementation = new NordicDfu(getContext());
+        implementation.setDFUEventListener(this::sendStateUpdate);
     }
 
     @PluginMethod
     public void startDFU(PluginCall call) {
-        this.savedCall = call;
-
         String deviceAddress = call.getString("deviceAddress");
         String deviceName = call.getString("deviceName", null);
         String filePath = call.getString("filePath");
@@ -139,6 +151,10 @@ public class NordicDfuPlugin extends Plugin {
         if (filePath == null || filePath.isEmpty()) {
             call.reject("filePath is required");
             return;
+        }
+
+        if (filePath.startsWith("file://")) {
+            filePath = filePath.replace("file://", "");
         }
 
         File file = new File(filePath);
@@ -160,10 +176,6 @@ public class NordicDfuPlugin extends Plugin {
         if (!isFileTypeSupported) {
             call.reject("File type not supported");
             return;
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            DfuServiceInitiator.createDfuNotificationChannel(getContext());
         }
 
         final DfuServiceInitiator starter = new DfuServiceInitiator(deviceAddress).setKeepBond(false);
@@ -191,7 +203,7 @@ public class NordicDfuPlugin extends Plugin {
 
         starter.setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true);
 
-        //        if (fileType == DfuBaseService.TYPE_AUTO)
+        //        if (fileType == DfuBaseService.TYPE_AUTO) // TODO:
         //            throw new UnsupportedOperationException("You must specify the file type");
 
         if (filePath.endsWith(".bin") || filePath.endsWith(".hex")) {
@@ -202,132 +214,34 @@ public class NordicDfuPlugin extends Plugin {
 
         final DfuServiceController controller = starter.start(getContext(), DfuService.class);
 
+        // // Optionally delete the file after DFU completes if it's no longer needed
+        // file.delete();
+
         // Send back some success or status message to JS
         call.resolve();
     }
 
-    private void sendEvent(String eventName, @Nullable JSObject data) {
+    private void sendStateUpdate(String state, @Nullable JSObject data) { //, String deviceAddress) {
+        JSObject ret = new JSObject();
+
         if (data == null) {
             data = new JSObject();
         }
-        notifyListeners(eventName, data);
-    }
 
-    private void sendStateUpdate(String state, String deviceAddress) {
-        JSObject ret = new JSObject();
-        Log.d(LOG_TAG, "State: " + state);
         ret.put("state", state);
-        ret.put("deviceAddress", deviceAddress);
-        notifyListeners(dfuStateEvent, ret, true);
+        ret.put("data", data);
+        notifyListeners(DFU_CHANGE_EVENT, ret);
     }
 
-    public void onHostResume() {
-        DfuServiceListenerHelper.registerProgressListener(getContext(), mDfuProgressListener);
+    @Override
+    protected void handleOnResume() {
+        super.handleOnResume();
+        implementation.onResume(getContext());
     }
 
-    public void onHostPause() {
-        // Currently, this does nothing but you can add logic here if needed.
+    @Override
+    protected void handleOnPause() {
+        super.handleOnPause();
+        implementation.onPause(getContext());
     }
-
-    public void onHostDestroy() {
-        DfuServiceListenerHelper.unregisterProgressListener(getContext(), mDfuProgressListener);
-    }
-
-    private final DfuProgressListener mDfuProgressListener = new DfuProgressListener() {
-        @Override
-        public void onDeviceConnecting(final String deviceAddress) {
-            sendStateUpdate("CONNECTING", deviceAddress);
-        }
-
-        @Override
-        public void onDeviceConnected(@NonNull String deviceAddress) {}
-
-        @Override
-        public void onDfuProcessStarting(final String deviceAddress) {
-            sendStateUpdate("DFU_PROCESS_STARTING", deviceAddress);
-        }
-
-        @Override
-        public void onDfuProcessStarted(@NonNull String deviceAddress) {}
-
-        @Override
-        public void onEnablingDfuMode(final String deviceAddress) {
-            sendStateUpdate("ENABLING_DFU_MODE", deviceAddress);
-        }
-
-        @Override
-        public void onFirmwareValidating(final String deviceAddress) {
-            sendStateUpdate("FIRMWARE_VALIDATING", deviceAddress);
-        }
-
-        @Override
-        public void onDeviceDisconnecting(final String deviceAddress) {
-            sendStateUpdate("DEVICE_DISCONNECTING", deviceAddress);
-        }
-
-        @Override
-        public void onDeviceDisconnected(@NonNull String deviceAddress) {}
-
-        @Override
-        public void onDfuCompleted(final String deviceAddress) {
-            if (savedCall != null) {
-                JSObject ret = new JSObject();
-                ret.put("deviceAddress", deviceAddress);
-                savedCall.resolve(ret);
-                savedCall = null;
-            }
-            sendStateUpdate("DFU_COMPLETED", deviceAddress);
-
-            new Handler()
-                .postDelayed(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            final NotificationManager manager = (NotificationManager) getBridge()
-                                .getActivity()
-                                .getSystemService(Context.NOTIFICATION_SERVICE);
-                            manager.cancel(DfuService.NOTIFICATION_ID);
-                        }
-                    },
-                    200
-                );
-        }
-
-        @Override
-        public void onDfuAborted(final String deviceAddress) {
-            sendStateUpdate("DFU_ABORTED", deviceAddress);
-            if (savedCall != null) {
-                savedCall.reject("2", "DFU ABORTED");
-                savedCall = null;
-            }
-        }
-
-        @Override
-        public void onProgressChanged(
-            final String deviceAddress,
-            final int percent,
-            final float speed,
-            final float avgSpeed,
-            final int currentPart,
-            final int partsTotal
-        ) {
-            JSObject ret = new JSObject();
-            ret.put("deviceAddress", deviceAddress);
-            ret.put("percent", percent);
-            ret.put("speed", speed);
-            ret.put("avgSpeed", avgSpeed);
-            ret.put("currentPart", currentPart);
-            ret.put("partsTotal", partsTotal);
-            sendEvent(progressEvent, ret);
-        }
-
-        @Override
-        public void onError(final String deviceAddress, final int error, final int errorType, final String message) {
-            sendStateUpdate("DFU_FAILED", deviceAddress);
-            if (savedCall != null) {
-                savedCall.reject(Integer.toString(error), message);
-                savedCall = null;
-            }
-        }
-    };
 }

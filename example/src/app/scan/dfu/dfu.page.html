@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>Device information</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button expand="block" (click)="pickFile()">Pick Files</ion-button>
+  <ion-button expand="block" (click)="updateFirmware()" [disabled]="!file">Update Firmware</ion-button>
+
+  <ion-list inset *ngIf="file; else noFile">
+    <ion-item>
+      <ion-label>
+        <ion-text>{{ file.name }}</ion-text><br />
+        <ion-note color="medium" class="ion-text-wrap"> {{ file.mimeType }} </ion-note>
+      </ion-label>
+      <div class="metadata-end-wrapper" slot="end">
+        <ion-note color="medium">{{ (file.size / 1000) | number:'1.0-0'}} kB</ion-note>
+      </div>
+    </ion-item>
+  </ion-list>
+  <ng-template #noFile>
+    <ion-note color="medium" class="ion-margin-horizontal">No file selected.</ion-note>
+  </ng-template>
+</ion-content>

@@ -2,8 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, NgZone } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import type { BleDevice, ScanResult } from '@capacitor-community/bluetooth-le';
-import { BleClient, ScanMode } from '@capacitor-community/bluetooth-le';
+import { BleClient, ScanMode, type BleDevice, type ScanResult } from '@capacitor-community/bluetooth-le';
 import { IonicModule } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { scan } from 'rxjs/operators';
