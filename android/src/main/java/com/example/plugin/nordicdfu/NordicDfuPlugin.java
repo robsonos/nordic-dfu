@@ -1,53 +1,38 @@
 package com.example.plugin.nordicdfu;
 
-import android.Manifest;
-import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.Handler;
 import android.util.Log;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.getcapacitor.JSObject;
-import com.getcapacitor.PermissionState;
 import com.getcapacitor.Plugin;
-import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
-import com.getcapacitor.annotation.Permission;
-import com.getcapacitor.annotation.PermissionCallback;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.List;
 import no.nordicsemi.android.dfu.DfuBaseService;
-import no.nordicsemi.android.dfu.DfuProgressListener;
-import no.nordicsemi.android.dfu.DfuProgressListenerAdapter;
 import no.nordicsemi.android.dfu.DfuServiceController;
 import no.nordicsemi.android.dfu.DfuServiceInitiator;
-import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 @CapacitorPlugin(
-    name = "NordicDfu",
-    permissions = {
-        @Permission(
-            strings = {
-                Manifest.permission.BLUETOOTH,
-                Manifest.permission.BLUETOOTH_ADMIN,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.BLUETOOTH_CONNECT,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            },
-            alias = "nordicdfu"
-        )
-    }
+    name = "NordicDfu"
+    //        permissions = {
+    //                @Permission(
+    //                        strings = {
+    //                                Manifest.permission.BLUETOOTH,
+    //                                Manifest.permission.BLUETOOTH_ADMIN,
+    //                                Manifest.permission.ACCESS_COARSE_LOCATION,
+    //                                Manifest.permission.ACCESS_FINE_LOCATION,
+    //                                Manifest.permission.BLUETOOTH_CONNECT,
+    //                                Manifest.permission.READ_EXTERNAL_STORAGE,
+    //                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+    //                        },
+    //                        alias = "nordicdfu"
+    //                )
+    //        }
 )
 public class NordicDfuPlugin extends Plugin {
 
@@ -107,6 +92,7 @@ public class NordicDfuPlugin extends Plugin {
     //         runInitialization(call);
     //     } else {
     //         call.reject("Permission denied.");
+    //         return;
     //     }
     // }
     //
@@ -134,9 +120,10 @@ public class NordicDfuPlugin extends Plugin {
 
     @PluginMethod
     public void startDFU(PluginCall call) {
-        String deviceAddress = call.getString("deviceAddress");
-        String deviceName = call.getString("deviceName", null);
-        String filePath = call.getString("filePath");
+        JSObject data = call.getData();
+        String deviceAddress = (String) data.opt("deviceAddress");
+        String deviceName = (String) data.opt("deviceName");
+        String filePath = (String) data.opt("filePath");
 
         if (deviceAddress == null || deviceAddress.isEmpty()) {
             call.reject("deviceAddress is required");
@@ -178,33 +165,104 @@ public class NordicDfuPlugin extends Plugin {
             return;
         }
 
-        final DfuServiceInitiator starter = new DfuServiceInitiator(deviceAddress).setKeepBond(false);
+        final DfuServiceInitiator starter = new DfuServiceInitiator(deviceAddress);
 
-        //        if (options.hasKey("retries")) {
-        //            int retries = options.getInt("retries");
-        //            starter.setNumberOfRetries(retries);
-        //        }
-
-        //        if (options.hasKey("maxMtu")) {
-        //            int mtu = options.getInt("maxMtu");
-        //            starter.setMtu(mtu);
-        //        }
-
+        // Default settings
         if (deviceName != null) {
             starter.setDeviceName(deviceName);
         }
-
-        // mimic behavior of iOSDFULibrary when packetReceiptNotificationParameter is set to `0` - see: https://github.com/NordicSemiconductor/IOS-Pods-DFU-Library/blob/master/iOSDFULibrary/Classes/Implementation/DFUServiceInitiator.swift#L115
-        //        if (packetReceiptNotificationParameter > 0) {
-        //            starter.setPacketsReceiptNotificationsValue(packetReceiptNotificationParameter);
-        //        } else {
-        starter.setPacketsReceiptNotificationsValue(1);
-        //        }
-
+        starter.setKeepBond(false);
+        starter.setForceDfu(true);
         starter.setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true);
+        starter.setPacketsReceiptNotificationsEnabled(true);
+        starter.setNumberOfRetries(10);
+        starter.setMtu(23);
+        starter.setPacketsReceiptNotificationsValue(1);
 
-        //        if (fileType == DfuBaseService.TYPE_AUTO) // TODO:
-        //            throw new UnsupportedOperationException("You must specify the file type");
+        if (data.has("dfuOptions")) {
+            Log.d(LOG_TAG, "dfuOptions: " + data.opt("dfuOptions"));
+
+            JSObject dfuOptions = null;
+            try {
+                JSONObject jsonDfuOptions = data.optJSONObject("dfuOptions");
+                if (jsonDfuOptions != null) {
+                    dfuOptions = new JSObject(jsonDfuOptions.toString());
+                }
+            } catch (JSONException e) {
+                call.reject("Invalid dfuOptions: " + e.getMessage());
+                return;
+            }
+
+            if (dfuOptions.has("disableNotification")) {
+                starter.setDisableNotification(dfuOptions.optBoolean("disableNotification"));
+            }
+
+            if (dfuOptions.has("startAsForegroundService")) {
+                starter.setForeground(dfuOptions.optBoolean("startAsForegroundService"));
+            }
+
+            if (dfuOptions.has("keepBond")) {
+                starter.setKeepBond(dfuOptions.optBoolean("keepBond"));
+            }
+
+            if (dfuOptions.has("restoreBond")) {
+                starter.setRestoreBond(dfuOptions.optBoolean("restoreBond"));
+            }
+
+            if (dfuOptions.has("dataObjectDelay")) {
+                starter.setPrepareDataObjectDelay(dfuOptions.optInt("dataObjectDelay"));
+            }
+
+            if (dfuOptions.has("packetReceiptNotificationsEnabled")) {
+                starter.setPacketsReceiptNotificationsEnabled(dfuOptions.optBoolean("packetReceiptNotificationsEnabled"));
+            }
+
+            if (dfuOptions.has("packetsReceiptNotificationsValue")) {
+                starter.setPacketsReceiptNotificationsValue(dfuOptions.optInt("packetReceiptNotificationsEnabled"));
+            }
+
+            if (dfuOptions.has("forceDfu")) {
+                starter.setForceDfu(dfuOptions.optBoolean("forceDfu"));
+            }
+
+            if (dfuOptions.has("rebootTime")) {
+                starter.setRebootTime(dfuOptions.optInt("rebootTime"));
+            }
+
+            if (dfuOptions.has("scanTimeout")) {
+                starter.setScanTimeout(dfuOptions.optInt("scanTimeout"));
+            }
+
+            if (dfuOptions.has("forceScanningForNewAddressInLegacyDfu")) {
+                starter.setForceScanningForNewAddressInLegacyDfu(dfuOptions.optBoolean("forceScanningForNewAddressInLegacyDfu"));
+            }
+
+            if (dfuOptions.has("numberOfRetries")) {
+                starter.setNumberOfRetries(dfuOptions.optInt("numberOfRetries"));
+            }
+
+            if (dfuOptions.has("mtu")) {
+                starter.setMtu(dfuOptions.optInt("mtu"));
+            }
+
+            if (dfuOptions.has("currentMtu")) {
+                starter.setCurrentMtu(dfuOptions.optInt("currentMtu"));
+            }
+
+            if (dfuOptions.has("scope")) {
+                starter.setScope(dfuOptions.optInt("scope"));
+            }
+
+            if (dfuOptions.has("mbrSize")) {
+                starter.setMbrSize(dfuOptions.optInt("mbrSize"));
+            }
+
+            if (dfuOptions.has("unsafeExperimentalButtonlessServiceInSecureDfuEnabled")) {
+                starter.setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(
+                    dfuOptions.optBoolean("unsafeExperimentalButtonlessServiceInSecureDfuEnabled")
+                );
+            }
+        }
 
         if (filePath.endsWith(".bin") || filePath.endsWith(".hex")) {
             starter.setBinOrHex(DfuBaseService.TYPE_APPLICATION, filePath).setInitFile(null, null);
@@ -214,14 +272,12 @@ public class NordicDfuPlugin extends Plugin {
 
         final DfuServiceController controller = starter.start(getContext(), DfuService.class);
 
-        // // Optionally delete the file after DFU completes if it's no longer needed
-        // file.delete();
+        // file.delete(); // TODO:implement this
 
-        // Send back some success or status message to JS
         call.resolve();
     }
 
-    private void sendStateUpdate(String state, @Nullable JSObject data) { //, String deviceAddress) {
+    private void sendStateUpdate(String state, @Nullable JSObject data) {
         JSObject ret = new JSObject();
 
         if (data == null) {

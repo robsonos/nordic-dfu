@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { type PluginResultError } from '@capacitor/core';
-import { Device } from '@capacitor/device';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import {
   BleClient,
@@ -12,7 +11,7 @@ import {
   type BleDevice,
   type ScanResult,
 } from '@capacitor-community/bluetooth-le';
-import { NordicDfu, type IDfuUpdateOptions } from '@capacitor-community/nordic-dfu';
+import { NordicDfu, type DfuUpdateOptions, DfuOptions } from '@capacitor-community/nordic-dfu';
 import { FilePicker, type PickedFile } from '@capawesome/capacitor-file-picker';
 import { IonicModule, Platform } from '@ionic/angular';
 
@@ -149,9 +148,8 @@ export class DfuComponent {
   async ionViewWillEnter(): Promise<void> {
     await this.connectToDevice();
 
-    NordicDfu.addListener('DFUStateChanged', ({ state }) => {
-      console.log('DFU state:', state);
-      // this.setState({ dfuState: state });
+    NordicDfu.addListener('DFUStateChanged', ({ state, data }) => {
+      console.log(`DFU: state: ${state}, data: ${JSON.stringify(data)}`);
     });
   }
 
@@ -165,13 +163,24 @@ export class DfuComponent {
       return;
     }
 
-    const options: IDfuUpdateOptions = {
+    const dfuOptions: DfuOptions = {
+      forceDfu: false,
+      mtu: 23,
+      currentMtu: 23,
+      keepBond: true,
+      restoreBond: true,
+      unsafeExperimentalButtonlessServiceInSecureDfuEnabled: false,
+      packetReceiptNotificationsEnabled: false,
+    };
+
+    const dfuUpdateOptions: DfuUpdateOptions = {
       deviceAddress: this.device.deviceId,
       deviceName: this.device.name,
       filePath: this.file.path,
+      dfuOptions: dfuOptions,
     };
 
-    NordicDfu.startDFU(options).then(
+    NordicDfu.startDFU(dfuUpdateOptions).then(
       () => this.toastService.presentInfoToast('DFU started'),
       (error: PluginResultError) => {
         console.error(error);

@@ -5,9 +5,8 @@ import { Router } from '@angular/router';
 import type { PluginResultError } from '@capacitor/core';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import type { BleDevice, ScanResult } from '@capacitor-community/bluetooth-le';
-import { BleClient, dataViewToText, textToDataView } from '@capacitor-community/bluetooth-le';
-import type { IDfuUpdateOptions } from '@capacitor-community/nordic-dfu';
-import { NordicDfu } from '@capacitor-community/nordic-dfu';
+import { BleClient, ConnectionPriority, dataViewToText, textToDataView } from '@capacitor-community/bluetooth-le';
+import { NordicDfu, type DfuUpdateOptions } from '@capacitor-community/nordic-dfu';
 import type { PickedFile } from '@capawesome/capacitor-file-picker';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { IonicModule, Platform } from '@ionic/angular';
@@ -90,6 +89,7 @@ export class DeviceInformationPageComponent {
 
       await this.loadingService.presentLoading(`Connecting to ${deviceId}`);
       await BleClient.connect(this.device.deviceId);
+      await BleClient.requestConnectionPriority(this.device.deviceId, ConnectionPriority.CONNECTION_PRIORITY_HIGH); // Android only
       await this.loadingService.dismissLoading();
 
       await this.toastService.presentSuccessToast(`Connected to device ${deviceId}`);
