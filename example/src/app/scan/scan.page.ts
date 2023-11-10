@@ -2,7 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, NgZone } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { BleClient, ScanMode, type BleDevice, type ScanResult } from '@capacitor-community/bluetooth-le';
+import { BleClient, ScanMode, type ScanResult } from '@capacitor-community/bluetooth-le';
 import { IonicModule } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { scan } from 'rxjs/operators';
@@ -48,26 +48,6 @@ export class ScanPageComponent {
       this.toastService.presentErrorToast('Please enable Bluetooth');
       return;
     }
-
-    const connectedDevices = await BleClient.getConnectedDevices([CONSTANTS.UUID128_SVC_NORDIC_UART]);
-
-    if (connectedDevices.length > 0) {
-      this.toastService.presentInfoToast('Already connected to a device, disconnecting...');
-
-      for (const connectedDevice of connectedDevices) {
-        await this.disconnectFromDevice(connectedDevice);
-      }
-    }
-  }
-
-  async disconnectFromDevice(connectedDevice: BleDevice) {
-    try {
-      await BleClient.disconnect(connectedDevice.deviceId);
-      await this.toastService.presentSuccessToast(`Disconnected from device ${connectedDevice.name}`);
-    } catch (error) {
-      console.error(error);
-      this.toastService.presentErrorToast(`Error disconnecting from device: ${JSON.stringify(error)}`);
-    }
   }
 
   async scanForBluetoothDevices(): Promise<void> {
@@ -99,9 +79,7 @@ export class ScanPageComponent {
       }, stopScanAfterMilliSeconds * 0.01);
 
       setTimeout(async () => {
-        if (this.bluetoothIsScanning) {
-          this.stopScanForBluetoothDevices();
-        }
+        this.stopScanForBluetoothDevices();
       }, stopScanAfterMilliSeconds);
     } catch (error) {
       this.bluetoothIsScanning = false;
@@ -110,11 +88,13 @@ export class ScanPageComponent {
   }
 
   async stopScanForBluetoothDevices(): Promise<void> {
-    await BleClient.stopLEScan();
-    this.bluetoothIsScanning = false;
-    this.scanProgress = 0;
-    clearInterval(this.scanInterval);
-    this.toastService.presentInfoToast('Scan stopped');
+    if (this.bluetoothIsScanning) {
+      await BleClient.stopLEScan();
+      this.bluetoothIsScanning = false;
+      this.scanProgress = 0;
+      clearInterval(this.scanInterval);
+      this.toastService.presentInfoToast('Scan stopped');
+    }
   }
 
   onBluetoothDeviceFound(result: ScanResult) {

@@ -8,6 +8,7 @@
     "ionic.ionic",
     "streetsidesoftware.code-spell-checker",
     "vscjava.vscode-java-pack",
-    "mpotthoff.vscode-android-webview-debug"
+    "mpotthoff.vscode-android-webview-debug",
+    "nisargjhaveri.ios-debug"
   ]
 }
