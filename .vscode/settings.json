@@ -26,5 +26,8 @@
   "prettier.printWidth": 120,
 
   // Code spell checker ignored words
-  "cSpell.words": []
+  "cSpell.words": [],
+  "[swift]": {
+    "editor.defaultFormatter": "vknabel.vscode-swiftformat"
+  }
 }

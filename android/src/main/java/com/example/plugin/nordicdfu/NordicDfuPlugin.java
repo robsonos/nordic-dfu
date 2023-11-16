@@ -1,13 +1,19 @@
 package com.example.plugin.nordicdfu;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
+import android.os.Build;
 import android.util.Log;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
 import com.getcapacitor.JSObject;
+import com.getcapacitor.PermissionState;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
+import com.getcapacitor.annotation.Permission;
+import com.getcapacitor.annotation.PermissionCallback;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -18,99 +24,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 @CapacitorPlugin(
-    name = "NordicDfu"
-    //        permissions = {
-    //                @Permission(
-    //                        strings = {
-    //                                Manifest.permission.BLUETOOTH,
-    //                                Manifest.permission.BLUETOOTH_ADMIN,
-    //                                Manifest.permission.ACCESS_COARSE_LOCATION,
-    //                                Manifest.permission.ACCESS_FINE_LOCATION,
-    //                                Manifest.permission.BLUETOOTH_CONNECT,
-    //                                Manifest.permission.READ_EXTERNAL_STORAGE,
-    //                                Manifest.permission.WRITE_EXTERNAL_STORAGE
-    //                        },
-    //                        alias = "nordicdfu"
-    //                )
-    //        }
+    name = "NordicDfu",
+    permissions = @Permission(strings = { Manifest.permission.POST_NOTIFICATIONS }, alias = "notifications")
 )
 public class NordicDfuPlugin extends Plugin {
 
     private NordicDfu implementation;
     public static final String DFU_CHANGE_EVENT = "DFUStateChanged";
     public static final String LOG_TAG = NordicDfuPlugin.class.getSimpleName();
-
-    // private String[] aliases;
-
-    // /**
-    //  * Clean up callback to prevent leaks.
-    //  */
-    // @Override
-    // protected void handleOnDestroy() {
-    //     implementation.setStatusChangeListener(null);
-    // }
-
-    // @PluginMethod
-    // public void initialize(PluginCall call) {
-    //     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // 31 is Android 12 (S)
-    //         boolean neverForLocation = call.getBoolean("androidNeverForLocation", false);
-    //         if (neverForLocation) {
-    //             aliases = new String[] { "BLUETOOTH_SCAN", "BLUETOOTH_CONNECT", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE" };
-    //         } else {
-    //             aliases =
-    //                 new String[] {
-    //                     "BLUETOOTH_SCAN",
-    //                     "BLUETOOTH_CONNECT",
-    //                     "ACCESS_FINE_LOCATION",
-    //                     "READ_EXTERNAL_STORAGE",
-    //                     "WRITE_EXTERNAL_STORAGE"
-    //                 };
-    //         }
-    //     } else {
-    //         aliases =
-    //             new String[] {
-    //                 "ACCESS_COARSE_LOCATION",
-    //                 "ACCESS_FINE_LOCATION",
-    //                 "BLUETOOTH",
-    //                 "BLUETOOTH_ADMIN",
-    //                 "READ_EXTERNAL_STORAGE",
-    //                 "WRITE_EXTERNAL_STORAGE"
-    //             };
-    //     }
-    //     requestPermissionForAliases(aliases, call, "checkPermission");
-    // }
-    //
-    // @PermissionCallback
-    // private void checkPermission(PluginCall call) {
-    //     List<Boolean> granted = new ArrayList<>();
-    //     for (String alias : aliases) {
-    //         granted.add(getPermissionState(alias) == PermissionState.GRANTED);
-    //     }
-    //
-    //     // Check if all permissions are granted
-    //     if (!granted.contains(false)) {
-    //         runInitialization(call);
-    //     } else {
-    //         call.reject("Permission denied.");
-    //         return;
-    //     }
-    // }
-    //
-    // private void runInitialization(PluginCall call) {
-    //     if (!getBridge().getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-    //         call.reject("BLE is not supported.");
-    //         return;
-    //     }
-    //
-    //     BluetoothManager bluetoothManager = (BluetoothManager) getBridge().getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-    //     BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
-    //
-    //     if (bluetoothAdapter == null) {
-    //         call.reject("BLE is not available.");
-    //         return;
-    //     }
-    //     call.resolve();
-    // }
 
     @Override
     public void load() {
@@ -143,7 +64,6 @@ public class NordicDfuPlugin extends Plugin {
         if (filePath.startsWith("file://")) {
             filePath = filePath.replace("file://", "");
         }
-
         File file = new File(filePath);
         if (!file.exists()) {
             call.reject("File not found: " + filePath);
@@ -151,7 +71,6 @@ public class NordicDfuPlugin extends Plugin {
         }
 
         List<String> supportedFileTypes = Arrays.asList(".bin", ".hex", ".zip");
-
         boolean isFileTypeSupported = false;
         for (String type : supportedFileTypes) {
             if (filePath.endsWith(type)) {
@@ -159,7 +78,6 @@ public class NordicDfuPlugin extends Plugin {
                 break;
             }
         }
-
         if (!isFileTypeSupported) {
             call.reject("File type not supported");
             return;
@@ -171,13 +89,6 @@ public class NordicDfuPlugin extends Plugin {
         if (deviceName != null) {
             starter.setDeviceName(deviceName);
         }
-        starter.setKeepBond(false);
-        starter.setForceDfu(true);
-        starter.setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true);
-        starter.setPacketsReceiptNotificationsEnabled(true);
-        starter.setNumberOfRetries(10);
-        starter.setMtu(23);
-        starter.setPacketsReceiptNotificationsValue(1);
 
         if (data.has("dfuOptions")) {
             Log.d(LOG_TAG, "dfuOptions: " + data.opt("dfuOptions"));
@@ -272,9 +183,51 @@ public class NordicDfuPlugin extends Plugin {
 
         final DfuServiceController controller = starter.start(getContext(), DfuService.class);
 
-        // file.delete(); // TODO:implement this
+        // file.delete(); // TODO: implement delete
 
         call.resolve();
+    }
+
+    @PluginMethod
+    public void checkPermissions(PluginCall call) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            JSObject permissionsResultJSON = new JSObject();
+            permissionsResultJSON.put("notifications", getNotificationPermissionText());
+            call.resolve(permissionsResultJSON);
+        } else {
+            super.checkPermissions(call);
+        }
+    }
+
+    @PluginMethod
+    public void requestPermissions(PluginCall call) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || getPermissionState("notifications") == PermissionState.GRANTED) {
+            JSObject permissionsResultJSON = new JSObject();
+            permissionsResultJSON.put("notifications", getNotificationPermissionText());
+            call.resolve(permissionsResultJSON);
+        } else {
+            requestPermissionForAlias("notifications", call, "permissionsCallback");
+        }
+    }
+
+    @PermissionCallback
+    private void permissionsCallback(PluginCall call) {
+        JSObject permissionsResultJSON = new JSObject();
+        permissionsResultJSON.put("notifications", getNotificationPermissionText());
+        call.resolve(permissionsResultJSON);
+    }
+
+    private String getNotificationPermissionText() {
+        if (areNotificationsEnabled()) {
+            return "granted";
+        } else {
+            return "denied";
+        }
+    }
+
+    private boolean areNotificationsEnabled() {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+        return notificationManager.areNotificationsEnabled();
     }
 
     private void sendStateUpdate(String state, @Nullable JSObject data) {
@@ -299,5 +252,11 @@ public class NordicDfuPlugin extends Plugin {
     protected void handleOnPause() {
         super.handleOnPause();
         implementation.onPause(getContext());
+    }
+
+    @Override
+    protected void handleOnDestroy() {
+        super.handleOnDestroy();
+        implementation.onDestroy(getContext());
     }
 }

@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Inject, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { type PluginResultError } from '@capacitor/core';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { type BleDevice, type ScanResult } from '@capacitor-community/bluetooth-le';
-import { NordicDfu, type DfuUpdateOptions, DfuOptions } from '@capacitor-community/nordic-dfu';
+import { NordicDfu, type DfuUpdateOptions, DfuOptions, DfuUpdate } from '@capacitor-community/nordic-dfu';
 import { FilePicker, type PickedFile } from '@capawesome/capacitor-file-picker';
 import { IonicModule, Platform } from '@ionic/angular';
 
@@ -21,8 +21,14 @@ import { ToastService } from '../../services/toast.service';
 export class DfuComponent {
   public device!: BleDevice;
   public file!: PickedFile | undefined;
+  public update: DfuUpdate | undefined;
 
-  constructor(public platform: Platform, private router: Router, private toastService: ToastService) {
+  constructor(
+    @Inject(NgZone) private ngZone: NgZone,
+    public platform: Platform,
+    private router: Router,
+    private toastService: ToastService
+  ) {
     const navigation = this.router.getCurrentNavigation();
 
     if (!navigation) {
@@ -61,14 +67,33 @@ export class DfuComponent {
     this.device = device.device;
   }
 
+  async ensureNotificationPermission(): Promise<boolean> {
+    const request = await NordicDfu.checkPermissions();
+
+    if (request.notifications !== 'granted') {
+      const request = await NordicDfu.requestPermissions();
+      return request.notifications === 'granted';
+    }
+
+    return true;
+  }
+
   async ionViewWillEnter(): Promise<void> {
-    NordicDfu.addListener('DFUStateChanged', ({ state, data }) => {
-      console.log(`DFU: state: ${state}, data: ${JSON.stringify(data)}`);
-    });
+    if (await this.ensureNotificationPermission()) {
+      await NordicDfu.addListener('DFUStateChanged', async (update: DfuUpdate) => {
+        console.log(`DFU: state: ${update.state}, data: ${JSON.stringify(update.data)}`);
+        this.ngZone.run(() => {
+          this.update = update;
+        });
+      });
+    } else {
+      console.error('Notification permissions not granted');
+      this.toastService.presentErrorToast('Notification permissions not granted');
+    }
   }
 
   async ionViewWillLeave(): Promise<void> {
-    NordicDfu.removeAllListeners();
+    await NordicDfu.removeAllListeners();
   }
 
   async updateFirmware(): Promise<void> {
@@ -91,7 +116,7 @@ export class DfuComponent {
     };
 
     NordicDfu.startDFU(dfuUpdateOptions).then(
-      () => this.toastService.presentInfoToast('DFU started'),
+      () => this.toastService.presentInfoToast('Starting DFU...'),
       (error: PluginResultError) => {
         console.error(error);
         this.toastService.presentErrorToast(`Error starting DFU: ${JSON.stringify(error)}`);

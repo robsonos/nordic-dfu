@@ -4,4 +4,6 @@
         <service android:name=".DfuService"/>        
         <activity android:name=".NotificationActivity"/>
     </application>
+    
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 </manifest>

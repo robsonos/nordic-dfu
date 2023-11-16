@@ -1,7 +1,6 @@
 {
   "appId": "com.example.plugin.nordicdfu",
   "appName": "example",
-  "bundledWebRuntime": false,
   "webDir": "www",
   "plugins": {
     "SplashScreen": {

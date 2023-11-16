@@ -20,7 +20,7 @@
         button
       >
         <ion-icon color="primary" slot="start" [src]="getRssiIcon(scanResult.rssi || -90)" size="large"></ion-icon>
-        <ion-label> {{ scanResult.localName || 'Unknown' }} </ion-label>
+        <ion-label> {{ scanResult.device.name || 'Unknown' }} </ion-label>
         <ion-note slot="end">{{ scanResult.rssi }} db</ion-note>
       </ion-item>
     </ion-list>

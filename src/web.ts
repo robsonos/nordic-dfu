@@ -1,10 +1,15 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 import { WebPlugin, type PluginResultError, ListenerCallback, PluginListenerHandle } from '@capacitor/core';
-
-import type { DfuUpdateOptions, NordicDfuPlugin } from './definitions';
+import type { DfuUpdateOptions, NordicDfuPlugin, PermissionStatus } from './definitions';
 
 export class NordicDfuWeb extends WebPlugin implements NordicDfuPlugin {
   startDFU(_dfuUpdateOptions: DfuUpdateOptions): Promise<void | PluginResultError> {
+    throw this.unavailable('Method not available in this browser.');
+  }
+  checkPermissions(): Promise<PermissionStatus> {
+    throw this.unavailable('Method not available in this browser.');
+  }
+  requestPermissions(): Promise<PermissionStatus> {
     throw this.unavailable('Method not available in this browser.');
   }
   addListener(

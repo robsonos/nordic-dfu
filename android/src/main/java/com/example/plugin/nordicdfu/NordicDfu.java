@@ -1,7 +1,9 @@
 package com.example.plugin.nordicdfu;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.getcapacitor.JSObject;
@@ -72,13 +74,12 @@ public class NordicDfu {
 
         @Override
         public void onProgressChanged(
-            @NonNull final String deviceAddress,
-            final int percent,
-            final float speed,
-            final float avgSpeed,
-            final int currentPart,
-            final int partsTotal
-        ) {
+                @NonNull final String deviceAddress,
+                final int percent,
+                final float speed,
+                final float avgSpeed,
+                final int currentPart,
+                final int partsTotal) {
             JSObject ret = new JSObject();
             ret.put("deviceAddress", deviceAddress);
             ret.put("percent", percent);
@@ -115,6 +116,24 @@ public class NordicDfu {
             JSObject ret = new JSObject();
             ret.put("deviceAddress", deviceAddress);
             dfuEventListener.onDfuEvent("DFU_COMPLETED", ret);
+
+            // TODO: end activity
+            // new Handler()
+            // .postDelayed(
+            // new Runnable() {
+            // @Override
+            // public void run() {
+            // // if this activity is still open and upload process was completed, cancel
+            // the notification
+            // final NotificationManager manager = (NotificationManager)
+            // reactContext.getSystemService(
+            // Context.NOTIFICATION_SERVICE
+            // );
+            // manager.cancel(DfuService.NOTIFICATION_ID);
+            // }
+            // },
+            // 200
+            // );
         }
 
         @Override
@@ -125,7 +144,11 @@ public class NordicDfu {
         }
 
         @Override
-        public void onError(@NonNull final String deviceAddress, final int error, final int errorType, final String message) {
+        public void onError(
+                @NonNull final String deviceAddress,
+                final int error,
+                final int errorType,
+                final String message) {
             JSObject ret = new JSObject();
             ret.put("deviceAddress", deviceAddress);
             ret.put("error", error);
@@ -140,6 +163,9 @@ public class NordicDfu {
     }
 
     public void onPause(Context context) {
-        DfuServiceListenerHelper.registerProgressListener(context, dfuProgressListener);
+    }
+
+    public void onDestroy(Context context) {
+        DfuServiceListenerHelper.unregisterProgressListener(context, dfuProgressListener);
     }
 }

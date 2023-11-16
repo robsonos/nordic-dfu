@@ -1,36 +1,70 @@
-<p align="center"><br><img src="https://user-images.githubusercontent.com/236501/85893648-1c92e880-b7a8-11ea-926d-95355b8175c7.png" width="128" height="128" /></p>
-<h3 align="center">Example</h3>
-<p align="center"><strong><code>@capacitor-community/example</code></strong></p>
-<p align="center">
-  Capacitor community plugin for something awesome.
-</p>
+Set up:
 
-<p align="center">
-  <img src="https://img.shields.io/maintenance/yes/2020?style=flat-square" />
-  <a href="https://github.com/capacitor-community/example/actions?query=workflow%3A%22CI%22"><img src="https://img.shields.io/github/workflow/status/capacitor-community/example/CI?style=flat-square" /></a>
-  <a href="https://www.npmjs.com/package/@capacitor-community/example"><img src="https://img.shields.io/npm/l/@capacitor-community/example?style=flat-square" /></a>
-<br>
-  <a href="https://www.npmjs.com/package/@capacitor-community/example"><img src="https://img.shields.io/npm/dw/@capacitor-community/example?style=flat-square" /></a>
-  <a href="https://www.npmjs.com/package/@capacitor-community/example"><img src="https://img.shields.io/npm/v/@capacitor-community/example?style=flat-square" /></a>
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<a href="#contributors-"><img src="https://img.shields.io/badge/all%20contributors-0-orange?style=flat-square" /></a>
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
-</p>
+brew:
 
-## Maintainers
+```shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+(echo; echo 'eval "$(/usr/local/bin/brew shellenv)"') >> /Users/robson/.zprofile
+```
 
-| Maintainer | GitHub | Social |
-| -----------| -------| -------|
-| Ionitron (example) | [Ionitron](https://github.com/ionitron) | [@ionitron](https://twitter.com/ionitron) |
+rbenv:
 
-## Installation
+```shell
+brew install rbenv ruby-build
+```
 
-TODO
+jenv:
 
-## Configuration
+```shell
+brew install jenv
+```
 
-TODO
+nvm
 
-## Usage
+```shell
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
 
-TODO
+```
+
+After the above, make sure that `~/.zshrc` has the following:
+
+```shell
+# rbenv
+eval "$(rbenv init - zsh)"
+
+# jenv
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# android
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/emulator
+```
+
+ruby:
+
+```shell
+rbenv install 2.7.8
+```
+
+java:
+
+```shell
+brew install openjdk@17
+jenv add /usr/local/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home # path to java installation from the above
+
+```
+
+node:
+
+```shell
+nvm install 18
+```

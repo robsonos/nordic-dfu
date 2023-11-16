@@ -1,20 +1,78 @@
 import type { PluginListenerHandle, PluginResultError } from '@capacitor/core';
+import type { PermissionState } from '@capacitor/core';
+
+/**
+ * The current status of permissions in the plugin
+ */
+export interface PermissionStatus {
+  /**
+   * Permission state of notifications.
+   */
+  notifications: PermissionState;
+}
 
 /**
  * The DFU state that is passed to the DfuUpdate
  */
 export enum DfuState {
+  /**
+   * The device is currently connecting.
+   */
   DEVICE_CONNECTING = 'DEVICE_CONNECTING',
+
+  /**
+   * The device has successfully connected. Available for Android only.
+   */
   DEVICE_CONNECTED = 'DEVICE_CONNECTED',
+
+  /**
+   * The DFU process is about to start.
+   */
   DFU_PROCESS_STARTING = 'DFU_PROCESS_STARTING',
+
+  /**
+   * The DFU process has started. Available for Android only.
+   */
   DFU_PROCESS_STARTED = 'DFU_PROCESS_STARTED',
+
+  /**
+   * The device is enabling DFU mode.
+   */
   ENABLING_DFU_MODE = 'ENABLING_DFU_MODE',
+
+  /**
+   * The DFU process is in progress.
+   */
   DFU_PROGRESS = 'DFU_PROGRESS',
+
+  /**
+   * The firmware is currently being validated.
+   */
   VALIDATING_FIRMWARE = 'VALIDATING_FIRMWARE',
+
+  /**
+   * The device is disconnecting.
+   */
   DEVICE_DISCONNECTING = 'DEVICE_DISCONNECTING',
+
+  /**
+   * The device has disconnected. Available for Android only.
+   */
   DEVICE_DISCONNECTED = 'DEVICE_DISCONNECTED',
+
+  /**
+   * The DFU process has completed successfully.
+   */
   DFU_COMPLETED = 'DFU_COMPLETED',
+
+  /**
+   * The DFU process has been aborted.
+   */
   DFU_ABORTED = 'DFU_ABORTED',
+
+  /**
+   * The DFU process has failed.
+   */
   DFU_FAILED = 'DFU_FAILED',
 }
 
@@ -22,11 +80,31 @@ export enum DfuState {
  * The DFU data that is passed to the DfuUpdate object
  */
 export interface DfuUpdateData {
-  deviceAddress: string;
+  /**
+   * The current status of upload (0-99).
+   */
   percent?: number;
+
+  /**
+   * The current speed in bytes per millisecond.
+   */
   speed?: number;
+
+  /**
+   * The average speed in bytes per millisecond.
+   */
   avgSpeed?: number;
+
+  /**
+   * The number pf part being sent. In case the ZIP file contains a Soft Device and/or a Bootloader together
+   * with the application the SD+BL are sent as part 1, then the service starts again and send the application
+   * as part 2.
+   */
   currentPart?: number;
+
+  /**
+   * The total number of parts.
+   */
   partsTotal?: number;
 }
 
@@ -34,7 +112,14 @@ export interface DfuUpdateData {
  * The DFU update object that is passed to the DFUStateChanged event
  */
 export interface DfuUpdate {
+  /**
+   * The DFU state that is passed to the DfuUpdate
+   */
   state: DfuState;
+
+  /**
+   * The DFU data that is passed to the DfuUpdate object
+   */
   data: DfuUpdateData;
 }
 
@@ -187,9 +272,26 @@ export interface DfuOptions {
  * The options for the DFU process
  */
 export interface DfuUpdateOptions {
+  /**
+   * The target device address.
+   * On **Android** this is the BLE MAC address.
+   * On **iOS** and **web** it is a randomly generated UUID identifier.
+   */
   deviceAddress: string;
+
+  /**
+   * The name of the device
+   */
   deviceName?: string;
-  filePath: string | null;
+
+  /**
+   * The path to the firmware file
+   */
+  filePath: string;
+
+  /**
+   * The options for the DFU process
+   */
   dfuOptions?: DfuOptions;
 }
 
@@ -206,6 +308,16 @@ export interface NordicDfuPlugin {
    *
    */
   startDFU(dfuUpdateOptions: DfuUpdateOptions): Promise<void | PluginResultError>;
+
+  /**
+   * Check plugin permissions
+   */
+  checkPermissions(): Promise<PermissionStatus>;
+
+  /**
+   * Request permissions needed bu the plugin
+   */
+  requestPermissions(): Promise<PermissionStatus>;
 
   /**
    * Listen for when the DFU state changes
