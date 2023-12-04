@@ -1,5 +1,4 @@
-import type { PluginListenerHandle, PluginResultError } from '@capacitor/core';
-import type { PermissionState } from '@capacitor/core';
+import type { PluginListenerHandle, PluginResultError, PermissionState } from '@capacitor/core';
 
 /**
  * The current status of permissions in the plugin

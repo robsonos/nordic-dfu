@@ -67,29 +67,13 @@ export class DfuComponent {
     this.device = device.device;
   }
 
-  async ensureNotificationPermission(): Promise<boolean> {
-    const request = await NordicDfu.checkPermissions();
-
-    if (request.notifications !== 'granted') {
-      const request = await NordicDfu.requestPermissions();
-      return request.notifications === 'granted';
-    }
-
-    return true;
-  }
-
   async ionViewWillEnter(): Promise<void> {
-    if (await this.ensureNotificationPermission()) {
-      await NordicDfu.addListener('DFUStateChanged', async (update: DfuUpdate) => {
-        console.log(`DFU: state: ${update.state}, data: ${JSON.stringify(update.data)}`);
-        this.ngZone.run(() => {
-          this.update = update;
-        });
+    await NordicDfu.addListener('DFUStateChanged', async (update: DfuUpdate) => {
+      console.log(`DFU: state: ${update.state}, data: ${JSON.stringify(update.data)}`);
+      this.ngZone.run(() => {
+        this.update = update;
       });
-    } else {
-      console.error('Notification permissions not granted');
-      this.toastService.presentErrorToast('Notification permissions not granted');
-    }
+    });
   }
 
   async ionViewWillLeave(): Promise<void> {
@@ -98,8 +82,17 @@ export class DfuComponent {
 
   async updateFirmware(): Promise<void> {
     if (!this.file || !this.file.path) {
-      this.toastService.presentErrorToast('Pick a file first');
+      this.toastService.presentErrorToast('Pick a file first!');
       return;
+    }
+
+    const request = await NordicDfu.checkPermissions();
+    if (request.notifications !== 'granted') {
+      const request = await NordicDfu.requestPermissions();
+      if (request.notifications !== 'granted') {
+        this.toastService.presentErrorToast('Please allow notification access!');
+        return;
+      }
     }
 
     const dfuOptions: DfuOptions = {
@@ -126,8 +119,17 @@ export class DfuComponent {
 
   async pickFile(): Promise<void> {
     this.file = undefined;
+
+    const request = await Filesystem.checkPermissions();
+    if (request.publicStorage !== 'granted') {
+      const request = await Filesystem.requestPermissions();
+      if (request.publicStorage !== 'granted') {
+        this.toastService.presentErrorToast('Please allow file system access!');
+        return;
+      }
+    }
+
     try {
-      await Filesystem.requestPermissions();
       const { files } = await FilePicker.pickFiles({
         readData: true,
         types: ['application/zip'],
@@ -148,8 +150,11 @@ export class DfuComponent {
 
         this.file.path = uri;
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      if (error.message !== 'pickFiles canceled.') {
+        console.error(error);
+        this.toastService.presentErrorToast(`Error picking file: ${JSON.stringify(error)}`);
+      }
     }
   }
 }

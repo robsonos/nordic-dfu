@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { scan } from 'rxjs/operators';
 
-import { StatusBarService } from '../services/status-bar.service';
 import { ToastService } from '../services/toast.service';
 import { CONSTANTS } from '../shared/constants';
 
@@ -30,23 +29,13 @@ export class ScanPageComponent {
     }, [])
   );
 
-  constructor(
-    @Inject(NgZone) private ngZone: NgZone,
-    private statusBarService: StatusBarService,
-    private toastService: ToastService
-  ) {}
+  constructor(@Inject(NgZone) private ngZone: NgZone, private toastService: ToastService) {}
 
   async ionViewWillEnter() {
-    this.statusBarService.setStatusBarStyleDark();
-    this.statusBarService.showStatusBar();
-
-    await BleClient.initialize();
-
-    const isEnabled = await BleClient.isEnabled();
-
-    if (!isEnabled) {
-      this.toastService.presentErrorToast('Please enable Bluetooth');
-      return;
+    try {
+      await BleClient.initialize();
+    } catch (error) {
+      this.toastService.presentErrorToast(`Error initializing bluetooth: ${JSON.stringify(error)}`);
     }
   }
 
@@ -55,10 +44,9 @@ export class ScanPageComponent {
       const isEnabled = await BleClient.isEnabled();
 
       if (!isEnabled) {
-        this.toastService.presentErrorToast('Please enable Bluetooth');
+        this.toastService.presentErrorToast('Please enable bluetooth');
         return;
       }
-
       const stopScanAfterMilliSeconds = 10000;
 
       this.scanResultSubject.next(null);
