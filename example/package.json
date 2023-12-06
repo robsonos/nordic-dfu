@@ -10,7 +10,7 @@
     "mobile"
   ],
   "scripts": {
-    "postinstall": "yarn cache clean @capacitor-community/nordic-dfu",
+    "postinstall": "yarn cache clean capacitor-community-nordic-dfu",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test"
@@ -25,7 +25,7 @@
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
     "@capacitor-community/bluetooth-le": "^3.0.1",
-    "@capacitor-community/nordic-dfu": "file:..",
+    "capacitor-community-nordic-dfu": "file:..",
     "@capacitor/android": "^5.3.0",
     "@capacitor/core": "^5.3.0",
     "@capacitor/filesystem": "^5.1.4",

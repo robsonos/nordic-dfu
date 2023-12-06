@@ -5,9 +5,9 @@ import { Router } from '@angular/router';
 import { type PluginResultError } from '@capacitor/core';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { type BleDevice, type ScanResult } from '@capacitor-community/bluetooth-le';
-import { NordicDfu, type DfuUpdateOptions, DfuOptions, DfuUpdate } from '@capacitor-community/nordic-dfu';
 import { FilePicker, type PickedFile } from '@capawesome/capacitor-file-picker';
 import { IonicModule, Platform } from '@ionic/angular';
+import { NordicDfu, type DfuUpdateOptions, DfuOptions, DfuUpdate } from 'capacitor-community-nordic-dfu';
 
 import { ToastService } from '../../services/toast.service';
 

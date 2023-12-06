@@ -1361,7 +1361,7 @@
   dependencies:
     "@types/web-bluetooth" "^0.0.16"
 
-"@capacitor-community/nordic-dfu@file:..":
+"capacitor-community-nordic-dfu@file:..":
   version "0.0.1"
 
 "@capacitor/android@^5.3.0":

@@ -1,5 +1,5 @@
 {
-  "name": "@capacitor-community/nordic-dfu",
+  "name": "capacitor-community-nordic-dfu",
   "version": "0.0.1",
   "description": "Nordic DFU OTA integration for Capacitor",
   "main": "dist/plugin.cjs.js",
