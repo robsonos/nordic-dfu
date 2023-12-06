@@ -6,7 +6,7 @@ import UserNotifications
 
 @objc(NordicDfuPlugin)
 public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDelegate, DFUProgressDelegate, NotificationHandlerProtocol {
-    public var DFU_CHANGE_EVENT: String = "DFUStateChanged"
+    public var dfuChangeEvent: String = "DFUStateChanged"
     var notificationRequestLookup = [String: JSObject]()
     private var manager: CBCentralManager?
 
@@ -18,7 +18,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
         var notification: JSObject = [
             "id": Int(request.identifier) ?? -1,
             "title": request.content.title,
-            "body": request.content.body,
+            "body": request.content.body
         ]
 
         if let userInfo = JSTypes.coerceDictionaryToJSObject(request.content.userInfo) {
@@ -72,7 +72,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
         return [
             .badge,
             .sound,
-            .alert,
+            .alert
         ]
     }
 
@@ -137,7 +137,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
             "speed": currentSpeedBytesPerSecond / 1000,
             "avgSpeed": avgSpeedBytesPerSecond / 1000,
             "currentPart": part,
-            "partsTotal": totalParts,
+            "partsTotal": totalParts
         ]
         sendStateUpdate("DFU_PROGRESS", data)
     }
@@ -145,9 +145,9 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
     private func sendStateUpdate(_ state: String, _ data: JSObject = [:]) {
         let ret: JSObject = [
             "state": state,
-            "data": data,
+            "data": data
         ]
-        notifyListeners(DFU_CHANGE_EVENT, data: ret)
+        notifyListeners(dfuChangeEvent, data: ret)
     }
 
     @objc func startDFU(_ call: CAPPluginCall) {
@@ -238,8 +238,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
             // }
 
             if let packetsReceiptNotificationsValueStr = dfuOption["packetsReceiptNotificationsValue"] as? String,
-               let packetsReceiptNotificationsValue = UInt16(packetsReceiptNotificationsValueStr)
-            {
+               let packetsReceiptNotificationsValue = UInt16(packetsReceiptNotificationsValueStr) {
                 starter.packetReceiptNotificationParameter = packetsReceiptNotificationsValue
             }
 

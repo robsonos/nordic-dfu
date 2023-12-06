@@ -1,0 +1,40 @@
+name: Continuous integration
+on:
+  push:
+    branches:
+      - dev
+
+env:
+  JAVA_VERSION: 17
+
+jobs:
+  ci:
+    runs-on: macos-13
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Set up Xcode
+        run: sudo xcode-select --switch /Applications/Xcode_14.2.app
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'zulu'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Verify
+        run: yarn verify

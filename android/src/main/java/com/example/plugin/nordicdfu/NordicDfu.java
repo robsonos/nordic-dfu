@@ -74,12 +74,13 @@ public class NordicDfu {
 
         @Override
         public void onProgressChanged(
-                @NonNull final String deviceAddress,
-                final int percent,
-                final float speed,
-                final float avgSpeed,
-                final int currentPart,
-                final int partsTotal) {
+            @NonNull final String deviceAddress,
+            final int percent,
+            final float speed,
+            final float avgSpeed,
+            final int currentPart,
+            final int partsTotal
+        ) {
             JSObject ret = new JSObject();
             ret.put("deviceAddress", deviceAddress);
             ret.put("percent", percent);
@@ -116,7 +117,6 @@ public class NordicDfu {
             JSObject ret = new JSObject();
             ret.put("deviceAddress", deviceAddress);
             dfuEventListener.onDfuEvent("DFU_COMPLETED", ret);
-
             // TODO: end activity
             // new Handler()
             // .postDelayed(
@@ -144,11 +144,7 @@ public class NordicDfu {
         }
 
         @Override
-        public void onError(
-                @NonNull final String deviceAddress,
-                final int error,
-                final int errorType,
-                final String message) {
+        public void onError(@NonNull final String deviceAddress, final int error, final int errorType, final String message) {
             JSObject ret = new JSObject();
             ret.put("deviceAddress", deviceAddress);
             ret.put("error", error);
@@ -162,8 +158,7 @@ public class NordicDfu {
         DfuServiceListenerHelper.registerProgressListener(context, dfuProgressListener);
     }
 
-    public void onPause(Context context) {
-    }
+    public void onPause(Context context) {}
 
     public void onDestroy(Context context) {
         DfuServiceListenerHelper.unregisterProgressListener(context, dfuProgressListener);
