@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>DFU</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      <ion-card-title>DFU state</ion-card-title>
+    </ion-list-header>
+    <ion-item>
+      State: {{ update?.state ?? 'unknown' }} <br />
+      Upload: {{ (update?.data?.percent?? 0) }} % <br />
+      Speed: {{ (update?.data?.speed ?? 0)* 1000 / 1024 | number }} kBps <br />
+      Average Speed: {{ (update?.data?.avgSpeed ?? 0)* 1000 / 1024 | number }} kBps <br />
+      Current part: {{ (update?.data?.currentPart ?? 0)}} <br />
+      Total Parts: {{ (update?.data?.partsTotal ?? 0)}} <br />
+    </ion-item>
+    <ion-progress-bar
+      *ngIf="update && update.data && update.data.percent"
+      [value]="update.data.percent / 100"
+    ></ion-progress-bar>
+  </ion-list>
+
+  <ion-button expand="block" (click)="pickFile()">Pick Files</ion-button>
+  <ion-button expand="block" (click)="updateFirmware()" [disabled]="!file">Update Firmware</ion-button>
+
+  <ion-list inset *ngIf="file; else noFile">
+    <ion-item>
+      <ion-label>
+        <ion-text>{{ file.name }}</ion-text><br />
+        <ion-note color="medium" class="ion-text-wrap"> {{ file.mimeType }} </ion-note>
+      </ion-label>
+      <div class="metadata-end-wrapper" slot="end">
+        <ion-note color="medium">{{ (file.size / 1000) | number:'1.0-0'}} kB</ion-note>
+      </div>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noFile>
+    <ion-note color="medium" class="ion-margin-horizontal">No file selected.</ion-note>
+  </ng-template>
+</ion-content>

@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.plugin.nordicdfu">
+    <application>
+        <service android:name=".DfuService"/>        
+        <activity android:name=".NotificationActivity"/>
+    </application>
+    
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+</manifest>

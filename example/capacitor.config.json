@@ -1,0 +1,11 @@
+{
+  "appId": "com.example.plugin.nordicdfu",
+  "appName": "example",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}
