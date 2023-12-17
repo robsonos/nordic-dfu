@@ -29,5 +29,6 @@
   "cSpell.words": ["Bootloader", "Buttonless", "Softdevice"],
   "[swift]": {
     "editor.defaultFormatter": "vknabel.vscode-swiftformat"
-  }
+  },
+  "java.configuration.updateBuildConfiguration": "automatic"
 }
