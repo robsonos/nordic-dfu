@@ -22,6 +22,32 @@ jobs:
       - name: Lint
         run: yarn lint
 
+  verify-android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'zulu'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Verify
+        run: yarn verify:android
+
   verify-ios:
     runs-on: macos-13
     steps:
@@ -48,28 +74,60 @@ jobs:
       - name: Verify
         run: yarn verify:ios
 
-  verify-android:
+  create-pr:
     runs-on: ubuntu-latest
+    needs: [lint, verify-ios, verify-android]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Create pull or update pull request
+        uses: actions/github-script@v7
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
+          script: |
+            const head = context.payload.ref.replace('refs/heads/', '');
+            const base = 'main';
+            const title = 'Merge ' + head + ' into ' + base + ' 🔀';
+            const body = 'This is an automated PR';
 
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: 'zulu'
+            async function run() {
+              try {
+                const { data: pulls } = await github.rest.pulls.list({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open',
+                  head: context.repo.owner + ':' + head,
+                  base: base
+                });
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+                if (pulls.length > 0) {
+                  const pullNumber = pulls[0].number;
+                  console.log(`Updating existing PR #${pullNumber}`);
 
-      - name: Verify
-        run: yarn verify:android
+                  await github.rest.pulls.update({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: pullNumber,
+                    title: title,
+                    body: body
+                  });
+                } else {
+                  console.log('Creating new PR');
+                  await github.rest.pulls.create({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    title: title,
+                    body: body,
+                    head: head,
+                    base: base
+                  });
+                }
+              } catch (error) {
+                console.error('Error processing pull request:', error);
+                throw error;
+              }
+            }
+
+            run();
