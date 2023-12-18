@@ -30,6 +30,8 @@ public class NordicDfu {
     @Nullable
     private DfuEventListener dfuEventListener;
 
+    private long startTime = 0;
+
     public NordicDfu(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             DfuServiceInitiator.createDfuNotificationChannel(context);
@@ -60,6 +62,8 @@ public class NordicDfu {
 
         @Override
         public void onDfuProcessStarted(@NonNull final String deviceAddress) {
+            startTime = System.currentTimeMillis();
+
             JSObject ret = new JSObject();
             ret.put("deviceAddress", deviceAddress);
             dfuEventListener.onDfuEvent("DFU_PROCESS_STARTED", ret);
@@ -81,6 +85,15 @@ public class NordicDfu {
             final int currentPart,
             final int partsTotal
         ) {
+            long currentTime = System.currentTimeMillis();
+            long duration = currentTime - startTime;
+            long remainingTime = 0;
+
+            if (percent > 0) {
+                long estimatedTotalTime = (duration * 100) / percent;
+                remainingTime = estimatedTotalTime - duration;
+            }
+
             JSObject ret = new JSObject();
             ret.put("deviceAddress", deviceAddress);
             ret.put("percent", percent);
@@ -88,6 +101,8 @@ public class NordicDfu {
             ret.put("avgSpeed", avgSpeed);
             ret.put("currentPart", currentPart);
             ret.put("partsTotal", partsTotal);
+            ret.put("duration", duration);
+            ret.put("remainingTime", remainingTime);
             dfuEventListener.onDfuEvent("DFU_PROGRESS", ret);
         }
 
