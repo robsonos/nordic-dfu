@@ -24,4 +24,25 @@ end
 
 post_install do |installer|
   assertDeploymentTarget(installer)
+
+  # Get main project development team id
+  dev_team = ""
+  project = installer.aggregate_targets.first.user_project
+  project.targets.each do |target|
+      target.build_configurations.each do |config|
+          if dev_team.empty? && !config.build_settings['DEVELOPMENT_TEAM'].nil?
+              dev_team = config.build_settings['DEVELOPMENT_TEAM']
+          end
+      end
+  end
+  
+  # Apply development team to all pod targets
+  installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+          config.build_settings['DEVELOPMENT_TEAM'] = dev_team
+          config.build_settings['CODE_SIGN_STYLE'] = 'Automatic'
+          config.build_settings['CODE_SIGN_IDENTITY'] = 'iPhone Developer'
+          config.build_settings['PROVISIONING_PROFILE_SPECIFIER'] = ''
+      end
+  end
 end
