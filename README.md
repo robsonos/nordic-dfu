@@ -1,20 +1,34 @@
 <p align="center"><br><img src="https://user-images.githubusercontent.com/236501/85893648-1c92e880-b7a8-11ea-926d-95355b8175c7.png" width="128" height="128" /></p>
 <h3 align="center">Nordic DFU</h3>
-<p align="center"><strong><code>@capacitor-community/nordic-dfu</code></strong></p>
+<p align="center"><strong><code>capacitor-community-nordic-dfu</code></strong></p>
 <p align="center">
   Capacitor plugin to interface with Nordic DFU's <a href="https://github.com/NordicSemiconductor/IOS-DFU-Library">IOS-DFU-Library</a> and <a href="https://github.com/NordicSemiconductor/Android-DFU-Library">Android-DFU-Library</a>.
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/maintenance/yes/2020?style=flat-square" />
-  <a href="https://github.com/capacitor-community/example/actions?query=workflow%3A%22CI%22"><img src="https://img.shields.io/github/workflow/status/capacitor-community/example/CI?style=flat-square" /></a>
-  <a href="https://www.npmjs.com/package/@capacitor-community/example"><img src="https://img.shields.io/npm/l/@capacitor-community/example?style=flat-square" /></a>
-<br>
-  <a href="https://www.npmjs.com/package/@capacitor-community/example"><img src="https://img.shields.io/npm/dw/@capacitor-community/example?style=flat-square" /></a>
-  <a href="https://www.npmjs.com/package/@capacitor-community/example"><img src="https://img.shields.io/npm/v/@capacitor-community/example?style=flat-square" /></a>
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<a href="#contributors-"><img src="https://img.shields.io/badge/all%20contributors-0-orange?style=flat-square" /></a>
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+  <img src="https://img.shields.io/maintenance/yes/2023?style=flat-square" />
+  <a href="https://github.com/robsonos/nordic-dfu/actions/workflows/ci.yaml"
+    ><img
+      alt="GitHub Workflow Status (with event)"
+      src="https://img.shields.io/github/actions/workflow/status/robsonos/nordic-dfu/ci.yaml"
+  /></a>
+  <a href="https://www.npmjs.com/package/capacitor-community-nordic-dfu"
+    ><img src="https://img.shields.io/npm/l/capacitor-community-nordic-dfu?style=flat-square"
+  /></a>
+  <br />
+  <a href="https://www.npmjs.com/package/capacitor-community-nordic-dfu"
+    ><img
+      alt="Downloads from npmjs"
+      src="https://img.shields.io/npm/dw/capacitor-community-nordic-dfu?style=flat-square"
+  /></a>
+  <a href="https://www.npmjs.com/package/capacitor-community-nordic-dfu"
+    ><img alt="Version from npmjs" src="https://img.shields.io/npm/v/capacitor-community-nordic-dfu?style=flat-square"
+  /></a>
+  <a href="#contributors"
+    ><img
+      alt="GitHub contributors from allcontributors.org"
+      src="https://img.shields.io/github/all-contributors/robsonos/nordic-dfu"
+  /></a>
 </p>
 
 ## Table of Contents
@@ -23,6 +37,7 @@
 - [Installation](#installation)
 - [Permissions](#permissions)
 - [API](#api)
+- [Contributors](#contributors)
 
 ## Maintainers
 
@@ -33,7 +48,7 @@
 ## Installation
 
 ```bash
-npm install @capacitor-community/nordic-dfu
+npm install capacitor-community-nordic-dfu
 npx cap sync
 ```
 
@@ -221,13 +236,15 @@ The DFU update object that is passed to the DFUStateChanged event
 
 Contains data related to the DFU update process, such as progress and speed.
 
-| Prop              | Type                | Description                                                                                                                                                                                                                   | Since |
-| ----------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
-| **`percent`**     | <code>number</code> | The current status of upload (0-99).                                                                                                                                                                                          | 1.0.0 |
-| **`speed`**       | <code>number</code> | The current speed in bytes per millisecond.                                                                                                                                                                                   | 1.0.0 |
-| **`avgSpeed`**    | <code>number</code> | The average speed in bytes per millisecond.                                                                                                                                                                                   | 1.0.0 |
-| **`currentPart`** | <code>number</code> | The number of parts being sent. In case the ZIP file contains a Soft Device and/or a Bootloader together with the application the SD+BL are sent as part 1, then the service starts again and send the application as part 2. | 1.0.0 |
-| **`partsTotal`**  | <code>number</code> | The total number of parts.                                                                                                                                                                                                    | 1.0.0 |
+| Prop                | Type                | Description                                                                                                                                                                                                                   | Since |
+| ------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| **`percent`**       | <code>number</code> | The current status of upload (0-99).                                                                                                                                                                                          | 1.0.0 |
+| **`speed`**         | <code>number</code> | The current speed in bytes per millisecond.                                                                                                                                                                                   | 1.0.0 |
+| **`avgSpeed`**      | <code>number</code> | The average speed in bytes per millisecond.                                                                                                                                                                                   | 1.0.0 |
+| **`currentPart`**   | <code>number</code> | The number of parts being sent. In case the ZIP file contains a Soft Device and/or a Bootloader together with the application the SD+BL are sent as part 1, then the service starts again and send the application as part 2. | 1.0.0 |
+| **`partsTotal`**    | <code>number</code> | The total number of parts.                                                                                                                                                                                                    | 1.0.0 |
+| **`duration`**      | <code>number</code> | The total time elapsed since the start of the DFU process in milliseconds                                                                                                                                                     | 1.0.1 |
+| **`remainingTime`** | <code>number</code> | The estimated remaining time to the end of the DFU process in milliseconds                                                                                                                                                    | 1.0.1 |
 
 
 ### Type Aliases
@@ -259,3 +276,14 @@ Contains data related to the DFU update process, such as progress and speed.
 | **`DFU_FAILED`**           | <code>'DFU_FAILED'</code>           | The DFU process has failed.                                        | 1.0.0 |
 
 </docgen-api>
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->

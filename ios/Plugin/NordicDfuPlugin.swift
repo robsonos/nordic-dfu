@@ -1,7 +1,7 @@
 import Capacitor
 import CoreBluetooth
 import Foundation
-import iOSDFULibrary
+import NordicDFU
 import UserNotifications
 
 @objc(NordicDfuPlugin)
@@ -9,6 +9,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
     public var dfuChangeEvent: String = "DFUStateChanged"
     var notificationRequestLookup = [String: JSObject]()
     private var manager: CBCentralManager?
+    private var dfuStartTime: TimeInterval?
 
     override public func load() {
         manager = CBCentralManager(delegate: self, queue: nil)
@@ -18,7 +19,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
         var notification: JSObject = [
             "id": Int(request.identifier) ?? -1,
             "title": request.content.title,
-            "body": request.content.body
+            "body": request.content.body,
         ]
 
         if let userInfo = JSTypes.coerceDictionaryToJSObject(request.content.userInfo) {
@@ -72,7 +73,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
         return [
             .badge,
             .sound,
-            .alert
+            .alert,
         ]
     }
 
@@ -117,27 +118,46 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
             sendStateUpdate("VALIDATING_FIRMWARE")
         case .disconnecting:
             sendStateUpdate("DEVICE_DISCONNECTING")
-        case .completed:
-            sendStateUpdate("DFU_COMPLETED")
-        case .aborted:
-            sendStateUpdate("DFU_ABORTED")
+        case .completed, .aborted:
+            // Reset dfuStartTime at the end of the process
+            dfuStartTime = nil
+            sendStateUpdate(state == .completed ? "DFU_COMPLETED" : "DFU_ABORTED")
         case .uploading:
             break // Ignore
         }
     }
 
     public func dfuError(_: DFUError, didOccurWithMessage _: String) {
+        // Reset dfuStartTime if an error occurs
+        dfuStartTime = nil
         sendStateUpdate("DFU_FAILED")
     }
 
     public func dfuProgressDidChange(for part: Int, outOf totalParts: Int, to progress: Int, currentSpeedBytesPerSecond: Double, avgSpeedBytesPerSecond: Double) {
+        if dfuStartTime == nil {
+            dfuStartTime = Date().timeIntervalSince1970
+        }
+
+        let currentTime = Date().timeIntervalSince1970
+        let durationInSeconds = currentTime - (dfuStartTime ?? currentTime)
+        let duration = durationInSeconds * 1000 // Convert duration to milliseconds
+
+        var remainingTime: TimeInterval = 0
+        if progress > 0 {
+            let estimatedTotalTimeInSeconds = durationInSeconds * (100.0 / Double(progress))
+            let estimatedRemainingTimeInSeconds = estimatedTotalTimeInSeconds - durationInSeconds
+            remainingTime = estimatedRemainingTimeInSeconds * 1000 // Convert remaining time to milliseconds
+        }
+
         let data: JSObject = [
             "deviceAddress": "",
             "percent": progress,
             "speed": currentSpeedBytesPerSecond / 1000,
             "avgSpeed": avgSpeedBytesPerSecond / 1000,
             "currentPart": part,
-            "partsTotal": totalParts
+            "partsTotal": totalParts,
+            "duration": duration,
+            "remainingTime": remainingTime,
         ]
         sendStateUpdate("DFU_PROGRESS", data)
     }
@@ -145,7 +165,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
     private func sendStateUpdate(_ state: String, _ data: JSObject = [:]) {
         let ret: JSObject = [
             "state": state,
-            "data": data
+            "data": data,
         ]
         notifyListeners(dfuChangeEvent, data: ret)
     }
@@ -238,7 +258,8 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
             // }
 
             if let packetsReceiptNotificationsValueStr = dfuOption["packetsReceiptNotificationsValue"] as? String,
-               let packetsReceiptNotificationsValue = UInt16(packetsReceiptNotificationsValueStr) {
+               let packetsReceiptNotificationsValue = UInt16(packetsReceiptNotificationsValueStr)
+            {
                 starter.packetReceiptNotificationParameter = packetsReceiptNotificationsValue
             }
 
