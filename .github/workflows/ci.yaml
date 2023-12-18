@@ -83,6 +83,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Configure Git Action bot
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
       - name: Create pull or update pull request
         uses: actions/github-script@v6
         with:
