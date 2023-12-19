@@ -4,7 +4,7 @@
   "license": "MIT",
   "version": "1.0.0",
   "description": "An Ionic project",
-  "private": true,
+  "private": false,
   "keywords": [
     "capacitor",
     "mobile"
