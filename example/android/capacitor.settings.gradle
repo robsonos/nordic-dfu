@@ -5,11 +5,11 @@ project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/
 include ':capacitor-community-bluetooth-le'
 project(':capacitor-community-bluetooth-le').projectDir = new File('../node_modules/@capacitor-community/bluetooth-le/android')
 
-include ':capacitor-community-nordic-dfu'
-project(':capacitor-community-nordic-dfu').projectDir = new File('../node_modules/capacitor-community-nordic-dfu/android')
-
 include ':capacitor-filesystem'
 project(':capacitor-filesystem').projectDir = new File('../node_modules/@capacitor/filesystem/android')
 
 include ':capawesome-capacitor-file-picker'
 project(':capawesome-capacitor-file-picker').projectDir = new File('../node_modules/@capawesome/capacitor-file-picker/android')
+
+include ':capacitor-community-nordic-dfu'
+project(':capacitor-community-nordic-dfu').projectDir = new File('../node_modules/capacitor-community-nordic-dfu/android')
