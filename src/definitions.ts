@@ -152,14 +152,14 @@ export interface DfuUpdateData {
   /**
    * The total time elapsed since the start of the DFU process in milliseconds
    *
-   * @since 1.0.1
+   * @since 1.1.0
    */
   duration?: number;
 
   /**
    * The estimated remaining time to the end of the DFU process in milliseconds
    *
-   * @since 1.0.1
+   * @since 1.1.0
    */
   remainingTime?: number;
 }

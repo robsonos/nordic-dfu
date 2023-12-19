@@ -243,8 +243,8 @@ Contains data related to the DFU update process, such as progress and speed.
 | **`avgSpeed`**      | <code>number</code> | The average speed in bytes per millisecond.                                                                                                                                                                                   | 1.0.0 |
 | **`currentPart`**   | <code>number</code> | The number of parts being sent. In case the ZIP file contains a Soft Device and/or a Bootloader together with the application the SD+BL are sent as part 1, then the service starts again and send the application as part 2. | 1.0.0 |
 | **`partsTotal`**    | <code>number</code> | The total number of parts.                                                                                                                                                                                                    | 1.0.0 |
-| **`duration`**      | <code>number</code> | The total time elapsed since the start of the DFU process in milliseconds                                                                                                                                                     | 1.0.1 |
-| **`remainingTime`** | <code>number</code> | The estimated remaining time to the end of the DFU process in milliseconds                                                                                                                                                    | 1.0.1 |
+| **`duration`**      | <code>number</code> | The total time elapsed since the start of the DFU process in milliseconds                                                                                                                                                     | 1.1.0 |
+| **`remainingTime`** | <code>number</code> | The estimated remaining time to the end of the DFU process in milliseconds                                                                                                                                                    | 1.1.0 |
 
 
 ### Type Aliases
