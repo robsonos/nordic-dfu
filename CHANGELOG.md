@@ -1,3 +1,18 @@
+## [1.2.1](https://github.com/robsonos/nordic-dfu/compare/v1.2.0...v1.2.1) (2023-12-19)
+
+
+### Bug Fixes :bug:
+
+* fix releaserc ([db82936](https://github.com/robsonos/nordic-dfu/commit/db82936e1f0739e536de9c2d95937c54da10138e))
+
+
+### ci
+
+* update release secrets ([44e625d](https://github.com/robsonos/nordic-dfu/commit/44e625d3dd87ae3b1f1343cbfe4a19544f543b80))
+
+
+* Merge pull request #8 from robsonos/dev ([e45dc61](https://github.com/robsonos/nordic-dfu/commit/e45dc61caa81d25d3dfe01f666fca3811b6aca3a)), closes [#8](https://github.com/robsonos/nordic-dfu/issues/8)
+
 # [1.2.0](https://github.com/robsonos/nordic-dfu/compare/v1.1.0...v1.2.0) (2023-12-19)
 
 
