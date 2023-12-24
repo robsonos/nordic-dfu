@@ -2,7 +2,7 @@
 <h3 align="center">Nordic DFU</h3>
 <p align="center"><strong><code>capacitor-community-nordic-dfu</code></strong></p>
 <p align="center">
-  Capacitor plugin to interface with Nordic DFU's <a href="https://github.com/NordicSemiconductor/IOS-DFU-Library">IOS-DFU-Library</a> and <a href="https://github.com/NordicSemiconductor/Android-DFU-Library">Android-DFU-Library</a>.
+  Capacitor plugin to interface with Nordic's <a href="https://github.com/NordicSemiconductor/IOS-DFU-Library">IOS-DFU-Library</a> and <a href="https://github.com/NordicSemiconductor/Android-DFU-Library">Android-DFU-Library</a>.
 </p>
 
 <p align="center">
@@ -33,17 +33,11 @@
 
 ## Table of Contents
 
-- [Maintainers](#maintainers)
 - [Installation](#installation)
 - [Permissions](#permissions)
 - [API](#api)
+- [Maintainers](#maintainers)
 - [Contributors](#contributors)
-
-## Maintainers
-
-| Maintainer | GitHub                                  | Active |
-| ---------- | --------------------------------------- | ------ |
-| robsonos   | [robsonos](https://github.com/robsonos) | yes    |
 
 ## Installation
 
@@ -276,6 +270,12 @@ Contains data related to the DFU update process, such as progress and speed.
 | **`DFU_FAILED`**           | <code>'DFU_FAILED'</code>           | The DFU process has failed.                                        | 1.0.0 |
 
 </docgen-api>
+
+## Maintainers
+
+| Maintainer | GitHub                                  | Active |
+| ---------- | --------------------------------------- | ------ |
+| robsonos   | [robsonos](https://github.com/robsonos) | yes    |
 
 ## Contributors
 
