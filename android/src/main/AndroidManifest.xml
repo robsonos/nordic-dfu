@@ -1,9 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.plugin.nordicdfu">
     <application>
-        <service android:name=".DfuService"/>        
+        <service
+            android:name=".DfuService"
+            android:foregroundServiceType="connectedDevice" />        
         <activity android:name=".NotificationActivity"/>
     </application>
-    
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 </manifest>
