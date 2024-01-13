@@ -10,7 +10,7 @@
 <ion-content>
   <ion-list>
     <ion-list-header>
-      <ion-card-title>DFU state</ion-card-title>
+      <ion-label>DFU state</ion-label>
     </ion-list-header>
     <ion-item>
       State: {{ update?.state ?? 'unknown' }} <br />
@@ -22,16 +22,15 @@
       Duration: {{ (update?.data?.duration ?? 0) | number }} <br />
       Remaining time: {{ (update?.data?.remainingTime ?? 0) | number }} <br />
     </ion-item>
-    <ion-progress-bar
-      *ngIf="update && update.data && update.data.percent"
-      [value]="update.data.percent / 100"
-    ></ion-progress-bar>
+    @if(update && update.data && update.data.percent){
+    <ion-progress-bar [value]="update.data.percent / 100"></ion-progress-bar>
+    }
   </ion-list>
 
   <ion-button expand="block" (click)="pickFile()">Pick Files</ion-button>
   <ion-button expand="block" (click)="updateFirmware()" [disabled]="!file">Update Firmware</ion-button>
-
-  <ion-list inset *ngIf="file; else noFile">
+  @if(file){
+  <ion-list inset>
     <ion-item>
       <ion-label>
         <ion-text>{{ file.name }}</ion-text><br />
@@ -42,8 +41,7 @@
       </div>
     </ion-item>
   </ion-list>
-
-  <ng-template #noFile>
-    <ion-note color="medium" class="ion-margin-horizontal">No file selected.</ion-note>
-  </ng-template>
+  } @else {
+  <ion-note color="medium" class="ion-margin-horizontal">No file selected.</ion-note>
+  }
 </ion-content>

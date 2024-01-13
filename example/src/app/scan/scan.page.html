@@ -1,31 +1,42 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Scan</ion-title>
-    <ion-progress-bar *ngIf="scanProgress > 0" [value]="scanProgress"></ion-progress-bar>
+    @if(scanProgress > 0){
+    <ion-progress-bar [value]="scanProgress"></ion-progress-bar>
+    }
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-button expand="block" [disabled]="bluetoothIsScanning" (click)="scanForBluetoothDevices()">
-    {{ bluetoothIsScanning ? "Scanning" : "Scan" }}
-  </ion-button>
+  <ion-refresher slot="fixed" #scanRefresher (ionRefresh)="scanForBluetoothDevices($event)">
+    <ion-refresher-content pullingText="Pull to scan" refreshingText="Scanning..."></ion-refresher-content>
+  </ion-refresher>
 
   <ion-grid>
-    <ion-list *ngIf="(scanResults$ | async) as scanResults; else noDevices">
+    @if(scanResults$ | async; as scanResults){
+    <ion-list>
+      @for (scanResult of scanResults; track $index) {
       <ion-item
-        *ngFor="let scanResult  of scanResults"
         (click)="stopScanForBluetoothDevices()"
         [routerLink]="['/dfu']"
         [state]="{ device: scanResult}"
+        lines="full"
         button
       >
         <ion-icon color="primary" slot="start" [src]="getRssiIcon(scanResult.rssi || -90)" size="large"></ion-icon>
         <ion-label> {{ scanResult.device.name || 'Unknown' }} </ion-label>
         <ion-note slot="end">{{ scanResult.rssi }} db</ion-note>
       </ion-item>
-    </ion-list>
-    <ng-template #noDevices>
+      } @empty {
       <ion-note color="medium" class="ion-margin-horizontal">No devices found.</ion-note>
-    </ng-template>
+      }
+    </ion-list>
+
+    } @else {
+    <ion-note color="medium" class="ion-margin-horizontal">Swipe down to scan for nearby Bluetooth devices.</ion-note>
+    }
   </ion-grid>
 </ion-content>

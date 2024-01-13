@@ -1,37 +1,87 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
-import { CommonModule } from '@angular/common';
-import { Component, Inject, NgZone } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { AsyncPipe } from '@angular/common';
+import { Component, Inject, NgZone, ViewChild, type OnDestroy, type OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { BleClient, ScanMode, type ScanResult } from '@capacitor-community/bluetooth-le';
-import { IonicModule } from '@ionic/angular';
+import {
+  IonRouterLink,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonMenuButton,
+  IonTitle,
+  IonContent,
+  IonGrid,
+  IonList,
+  IonItem,
+  IonItemSliding,
+  IonItemOption,
+  IonItemOptions,
+  IonButton,
+  IonIcon,
+  IonLabel,
+  IonNote,
+  IonProgressBar,
+  IonRefresher,
+  IonRefresherContent,
+} from '@ionic/angular/standalone';
 import { Subject } from 'rxjs';
 import { scan } from 'rxjs/operators';
 
 import { ToastService } from '../services/toast.service';
 import { CONSTANTS } from '../shared/constants';
 
+// import { ToastService } from '../../../services/toast.service';
+// import { CONSTANTS } from '../../shared/constants';
+// import type { RefresherCustomEvent } from '../../shared/custom-event.interface';
+
 @Component({
   selector: 'app-scan',
   templateUrl: 'scan.page.html',
   styleUrls: ['scan.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterModule],
+  imports: [
+    AsyncPipe,
+    RouterLink,
+    IonRouterLink,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonMenuButton,
+    IonTitle,
+    IonContent,
+    IonGrid,
+    IonList,
+    IonItem,
+    IonItemSliding,
+    IonItemOption,
+    IonItemOptions,
+    IonButton,
+    IonIcon,
+    IonLabel,
+    IonNote,
+    IonProgressBar,
+    IonRefresher,
+    IonRefresherContent,
+  ],
 })
-export class ScanPageComponent {
-  bluetoothIsScanning = false;
-  scanInterval: any;
+export class ScanPage implements OnDestroy, OnInit {
+  /* This is used for stopping the scan before the user leaves the page */
+  @ViewChild('scanRefresher', { static: false }) scanRefresher!: IonRefresher;
+
+  scanInterval!: ReturnType<typeof setInterval>;
   scanProgress = 0;
   scanResultSubject = new Subject<ScanResult | null>();
   scanResults$ = this.scanResultSubject.asObservable().pipe(
-    scan((acc: ScanResult[], curr: any) => {
+    scan((acc: ScanResult[], curr: ScanResult | null) => {
       if (curr === null) return [];
       return [...acc, curr];
     }, [])
   );
 
-  constructor(@Inject(NgZone) private ngZone: NgZone, private toastService: ToastService) {}
+  constructor(@Inject(NgZone) private ngZone: NgZone, @Inject(ToastService) private toastService: ToastService) {}
 
-  async ionViewWillEnter() {
+  async ngOnInit(): Promise<void> {
     try {
       await BleClient.initialize();
     } catch (error) {
@@ -39,20 +89,22 @@ export class ScanPageComponent {
     }
   }
 
-  async scanForBluetoothDevices(): Promise<void> {
+  async ngOnDestroy(): Promise<void> {
+    await this.stopScanForBluetoothDevices();
+  }
+
+  async scanForBluetoothDevices(event: any): Promise<void> {
     try {
       const isEnabled = await BleClient.isEnabled();
 
       if (!isEnabled) {
+        event.target.complete();
         this.toastService.presentErrorToast('Please enable bluetooth');
         return;
       }
-      const stopScanAfterMilliSeconds = 10000;
+      const stopScanAfterMilliSeconds = CONSTANTS.SCAN_DURATION;
 
       this.scanResultSubject.next(null);
-
-      this.bluetoothIsScanning = true;
-      this.toastService.presentInfoToast('Scanning for devices');
 
       await BleClient.requestLEScan(
         {
@@ -67,31 +119,28 @@ export class ScanPageComponent {
       }, stopScanAfterMilliSeconds * 0.01);
 
       setTimeout(async () => {
+        event.target.complete();
         this.stopScanForBluetoothDevices();
       }, stopScanAfterMilliSeconds);
     } catch (error) {
-      this.bluetoothIsScanning = false;
       this.toastService.presentErrorToast(`Error scanning for devices: ${JSON.stringify(error)}`);
     }
   }
 
   async stopScanForBluetoothDevices(): Promise<void> {
-    if (this.bluetoothIsScanning) {
-      await BleClient.stopLEScan();
-      this.bluetoothIsScanning = false;
-      this.scanProgress = 0;
-      clearInterval(this.scanInterval);
-      this.toastService.presentInfoToast('Scan stopped');
-    }
+    await BleClient.stopLEScan();
+    this.scanRefresher.complete();
+    this.scanProgress = 0;
+    clearInterval(this.scanInterval);
   }
 
-  onBluetoothDeviceFound(result: ScanResult) {
+  onBluetoothDeviceFound(result: ScanResult): void {
     this.ngZone.run(() => {
       this.scanResultSubject.next(result);
     });
   }
 
-  getRssiIcon(rssi: number) {
+  getRssiIcon(rssi: number): string {
     if (rssi >= -40) {
       return '/assets/svg/wifi_5.svg';
     } else if (rssi >= -50) {
