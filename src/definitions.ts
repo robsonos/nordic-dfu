@@ -29,7 +29,7 @@ export enum DfuState {
   DEVICE_CONNECTING = 'DEVICE_CONNECTING',
 
   /**
-   * The device has successfully connected. Available for Android only.
+   * The device has successfully connected. **Available for Android only.**
    *
    * @since 1.0.0
    */
@@ -43,7 +43,7 @@ export enum DfuState {
   DFU_PROCESS_STARTING = 'DFU_PROCESS_STARTING',
 
   /**
-   * The DFU process has started. Available for Android only.
+   * The DFU process has started. **Available for Android only.**
    *
    * @since 1.0.0
    */
@@ -78,7 +78,7 @@ export enum DfuState {
   DEVICE_DISCONNECTING = 'DEVICE_DISCONNECTING',
 
   /**
-   * The device has disconnected. Available for Android only.
+   * The device has disconnected. **Available for Android only.**
    *
    * @since 1.0.0
    */
@@ -289,6 +289,17 @@ export interface DfuOptions {
   forceScanningForNewAddressInLegacyDfu?: boolean;
 
   /**
+   * This options allows to disable the resume feature in Secure DFU. When the extra value is set to true, the DFU will
+   * send Init Packet and Data again, despite the firmware might have been send partially before. By default, without
+   * setting this extra, or by setting it to false, the DFU will resume the previously cancelled upload if CRC values
+   * match.
+   *
+   * @default false
+   * @since 1.4.0
+   */
+  disableResume?: boolean;
+
+  /**
    * Sets the number of retries that the DFU service will use to complete DFU.
    *
    * @default 0
@@ -298,7 +309,7 @@ export interface DfuOptions {
 
   /**
    * Sets the Maximum Transfer Unit (MTU) value that the Secure DFU service will try to request
-   * before performing DFU.
+   * before performing DFU. **Available for Android only.**
    *
    * By default, value 517 will be used, which is the highest supported y Android. However, as the
    * highest supported MTU by the Secure DFU from SDK 15 (first which supports higher MTU) is 247,
@@ -310,12 +321,20 @@ export interface DfuOptions {
 
   /**
    * Sets the current MTU value. This method should be used only if the device is already
-   * connected and MTU has been requested before DFU service is started.
+   * connected and MTU has been requested before DFU service is started. **Available for Android only.**
    *
    * @default 23
    * @since 1.0.0
    */
   currentMtu?: number;
+
+  /**
+   * Disables MTU request. **Available for Android only.**
+   *
+   * @default false
+   * @since 1.4.0
+   */
+  disableMtuRequest?: boolean;
 
   /**
    * This method allows to narrow the update to selected parts from the ZIP, for example

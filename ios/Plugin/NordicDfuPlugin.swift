@@ -278,6 +278,10 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
                 starter.forceScanningForNewAddressInLegacyDfu = forceScanningForNewAddressInLegacyDfu
             }
 
+            if let disableResume = dfuOption["disableResume"] as? Bool {
+                starter.disableResume = disableResume
+            }
+
             // if (dfuOptions.has("numberOfRetries")) {
             //     starter.setNumberOfRetries(dfuOptions.optInt("numberOfRetries"));
             // }
