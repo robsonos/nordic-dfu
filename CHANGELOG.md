@@ -1,3 +1,19 @@
+# [1.4.0](https://github.com/robsonos/nordic-dfu/compare/v1.3.0...v1.4.0) (2024-01-14)
+
+
+### Bug Fixes :bug:
+
+* fix dfu for Android ([0427724](https://github.com/robsonos/nordic-dfu/commit/0427724cae99c7866f1a66d2aac235cedcc6ef84))
+
+
+* Merge pull request #10 from robsonos/dev ([2b647d0](https://github.com/robsonos/nordic-dfu/commit/2b647d024aeffacb4873a80f524264c904163026)), closes [#10](https://github.com/robsonos/nordic-dfu/issues/10)
+* Merge branch 'main' into dev ([b4c70bd](https://github.com/robsonos/nordic-dfu/commit/b4c70bdc47daa485cf4fd0e295d771f5e37230f7))
+
+
+### Features :sparkles:
+
+* add disableMtuRequest and disableResume ([15b6937](https://github.com/robsonos/nordic-dfu/commit/15b6937ce759348e6dfb604ed3c897b0f2ab0c2c))
+
 # [1.3.0](https://github.com/robsonos/nordic-dfu/compare/v1.2.1...v1.3.0) (2024-01-14)
 
 
