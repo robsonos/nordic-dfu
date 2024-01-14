@@ -127,9 +127,10 @@ export class DfuPage {
     }
 
     const dfuOptions: DfuOptions = {
-      mtu: 23,
-      currentMtu: 23,
-      packetReceiptNotificationsEnabled: false,
+      disableMtuRequest: true,
+      packetReceiptNotificationsEnabled: true,
+      packetsReceiptNotificationsValue: 6,
+      unsafeExperimentalButtonlessServiceInSecureDfuEnabled: true,
     };
 
     const dfuUpdateOptions: DfuUpdateOptions = {
