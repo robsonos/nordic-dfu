@@ -1,9 +1,7 @@
 package com.example.plugin.nordicdfu;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
-import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.getcapacitor.JSObject;

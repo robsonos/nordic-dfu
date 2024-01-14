@@ -7,6 +7,7 @@
   "files.eol": "\n",
   "files.insertFinalNewline": true,
   "terminal.integrated.scrollback": 10000,
+  "terminal.integrated.defaultProfile.osx": "zsh",
 
   // Todo tree settings
   "todo-tree.general.tags": ["BUG", "HACK", "FIXME", "TODO", "INFO"],

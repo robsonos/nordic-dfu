@@ -8,7 +8,7 @@ This guide provides instructions for contributing to this Capacitor plugin.
 
 #### Android studio
 
-Download and install [Android studio](https://developer.android.com/studio). The code has been developed using `Android Studio Giraffe | 2022.3.1 Patch 3`
+Download and install [Android studio](https://developer.android.com/studio). The code has been developed using `Android Studio Hedgehog | 2023.1.1 Patch 1`
 
 #### Xcode
 
