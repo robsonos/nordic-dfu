@@ -1,3 +1,25 @@
+# [1.3.0](https://github.com/robsonos/nordic-dfu/compare/v1.2.1...v1.3.0) (2024-01-14)
+
+
+### Bug Fixes :bug:
+
+* add foreground service for Android 14 ([12bbd7b](https://github.com/robsonos/nordic-dfu/commit/12bbd7b2e4496a538bb0555bf62321041cc0b6ce))
+* fix packetsReceiptNotificationsValue for Android ([2919c16](https://github.com/robsonos/nordic-dfu/commit/2919c164c34aa0c6e4a47c2d48f254d12e885c8f))
+
+
+### build
+
+* update to Angular's new build system ([006c81b](https://github.com/robsonos/nordic-dfu/commit/006c81b562281b33a897532e8bae9180cbcc48e4))
+
+
+* Merge pull request #9 from robsonos/dev ([b0a6b30](https://github.com/robsonos/nordic-dfu/commit/b0a6b307c3ad3f1d47d8b98ea4af429597d3f677)), closes [#9](https://github.com/robsonos/nordic-dfu/issues/9)
+
+
+### Features :sparkles:
+
+* update dependencies ([ca09d87](https://github.com/robsonos/nordic-dfu/commit/ca09d87e4930ac4014f1808a47721f88c5ca2623))
+* update to Angular's control flow and standalone components ([fdf116d](https://github.com/robsonos/nordic-dfu/commit/fdf116dc62cc00c3f2bfe1deb63ac41bf47907d6))
+
 ## [1.2.1](https://github.com/robsonos/nordic-dfu/compare/v1.2.0...v1.2.1) (2023-12-19)
 
 
