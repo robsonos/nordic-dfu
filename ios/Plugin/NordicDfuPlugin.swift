@@ -19,7 +19,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
         var notification: JSObject = [
             "id": Int(request.identifier) ?? -1,
             "title": request.content.title,
-            "body": request.content.body,
+            "body": request.content.body
         ]
 
         if let userInfo = JSTypes.coerceDictionaryToJSObject(request.content.userInfo) {
@@ -73,7 +73,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
         return [
             .badge,
             .sound,
-            .alert,
+            .alert
         ]
     }
 
@@ -157,7 +157,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
             "currentPart": part,
             "partsTotal": totalParts,
             "duration": duration,
-            "remainingTime": remainingTime,
+            "remainingTime": remainingTime
         ]
         sendStateUpdate("DFU_PROGRESS", data)
     }
@@ -165,7 +165,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
     private func sendStateUpdate(_ state: String, _ data: JSObject = [:]) {
         let ret: JSObject = [
             "state": state,
-            "data": data,
+            "data": data
         ]
         notifyListeners(dfuChangeEvent, data: ret)
     }
@@ -258,8 +258,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
             // }
 
             if let packetsReceiptNotificationsValueStr = dfuOption["packetsReceiptNotificationsValue"] as? String,
-               let packetsReceiptNotificationsValue = UInt16(packetsReceiptNotificationsValueStr)
-            {
+               let packetsReceiptNotificationsValue = UInt16(packetsReceiptNotificationsValueStr) {
                 starter.packetReceiptNotificationParameter = packetsReceiptNotificationsValue
             }
 

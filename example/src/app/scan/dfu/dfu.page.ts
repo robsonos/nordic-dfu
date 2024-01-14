@@ -1,12 +1,29 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { Component, Inject, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { type PluginResultError } from '@capacitor/core';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { type BleDevice, type ScanResult } from '@capacitor-community/bluetooth-le';
 import { FilePicker, type PickedFile } from '@capawesome/capacitor-file-picker';
-import { IonicModule, Platform } from '@ionic/angular';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonList,
+  IonListHeader,
+  IonItem,
+  IonButton,
+  IonButtons,
+  IonBackButton,
+  IonLabel,
+  IonText,
+  IonNote,
+  IonProgressBar,
+  IonSegment,
+  IonSegmentButton,
+} from '@ionic/angular/standalone';
 import { NordicDfu, type DfuUpdateOptions, DfuOptions, DfuUpdate } from 'capacitor-community-nordic-dfu';
 
 import { ToastService } from '../../services/toast.service';
@@ -16,19 +33,33 @@ import { ToastService } from '../../services/toast.service';
   templateUrl: 'dfu.page.html',
   styleUrls: ['dfu.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule],
+  imports: [
+    AsyncPipe,
+    DecimalPipe,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonList,
+    IonListHeader,
+    IonItem,
+    IonButton,
+    IonButtons,
+    IonBackButton,
+    IonLabel,
+    IonText,
+    IonNote,
+    IonProgressBar,
+    IonSegment,
+    IonSegmentButton,
+  ],
 })
-export class DfuComponent {
+export class DfuPage {
   public device!: BleDevice;
   public file!: PickedFile | undefined;
   public update: DfuUpdate | undefined;
 
-  constructor(
-    @Inject(NgZone) private ngZone: NgZone,
-    public platform: Platform,
-    private router: Router,
-    private toastService: ToastService
-  ) {
+  constructor(@Inject(NgZone) private ngZone: NgZone, private router: Router, private toastService: ToastService) {
     const navigation = this.router.getCurrentNavigation();
 
     if (!navigation) {

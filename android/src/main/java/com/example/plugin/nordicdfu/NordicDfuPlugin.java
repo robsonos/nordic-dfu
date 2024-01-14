@@ -129,7 +129,7 @@ public class NordicDfuPlugin extends Plugin {
             }
 
             if (dfuOptions.has("packetsReceiptNotificationsValue")) {
-                starter.setPacketsReceiptNotificationsValue(dfuOptions.optInt("packetReceiptNotificationsEnabled"));
+                starter.setPacketsReceiptNotificationsValue(dfuOptions.optInt("packetsReceiptNotificationsValue"));
             }
 
             if (dfuOptions.has("forceDfu")) {
