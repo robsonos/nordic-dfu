@@ -148,6 +148,12 @@ public class NordicDfuPlugin extends Plugin {
                 starter.setForceScanningForNewAddressInLegacyDfu(dfuOptions.optBoolean("forceScanningForNewAddressInLegacyDfu"));
             }
 
+            if (dfuOptions.has("disableResume")) {
+                if (dfuOptions.optBoolean("disableResume")) {
+                    starter.disableResume();
+                }
+            }
+
             if (dfuOptions.has("numberOfRetries")) {
                 starter.setNumberOfRetries(dfuOptions.optInt("numberOfRetries"));
             }
@@ -158,6 +164,12 @@ public class NordicDfuPlugin extends Plugin {
 
             if (dfuOptions.has("currentMtu")) {
                 starter.setCurrentMtu(dfuOptions.optInt("currentMtu"));
+            }
+
+            if (dfuOptions.has("disableMtuRequest")) {
+                if (dfuOptions.optBoolean("disableMtuRequest")) {
+                    starter.disableMtuRequest();
+                }
             }
 
             if (dfuOptions.has("scope")) {
@@ -174,6 +186,8 @@ public class NordicDfuPlugin extends Plugin {
                 );
             }
         }
+
+        starter.disableMtuRequest();
 
         if (filePath.endsWith(".bin") || filePath.endsWith(".hex")) {
             starter.setBinOrHex(DfuBaseService.TYPE_APPLICATION, filePath).setInitFile(null, null);
