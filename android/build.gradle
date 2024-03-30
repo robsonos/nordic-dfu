@@ -55,5 +55,5 @@ dependencies {
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
-    implementation "no.nordicsemi.android:dfu:2.4.1"
+    implementation "no.nordicsemi.android:dfu:2.4.2"
 }
