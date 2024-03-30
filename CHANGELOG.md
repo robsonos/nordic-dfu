@@ -1,3 +1,13 @@
+# [1.5.0](https://github.com/robsonos/nordic-dfu/compare/v1.4.0...v1.5.0) (2024-03-30)
+
+
+* Merge pull request #11 from robsonos/dev ([44ba9e6](https://github.com/robsonos/nordic-dfu/commit/44ba9e65aa7ec0c779e5a7dcbd574c5bad7691c6)), closes [#11](https://github.com/robsonos/nordic-dfu/issues/11)
+
+
+### Features :sparkles:
+
+* update dfu library ([951dc52](https://github.com/robsonos/nordic-dfu/commit/951dc5267b84f54ff14dbe6c3be06ed544088a00))
+
 # [1.4.0](https://github.com/robsonos/nordic-dfu/compare/v1.3.0...v1.4.0) (2024-01-14)
 
 
