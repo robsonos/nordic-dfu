@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/maintenance/yes/2023?style=flat-square" />
+  <img src="https://img.shields.io/maintenance/yes/2024?style=flat-square" />
   <a href="https://github.com/robsonos/nordic-dfu/actions/workflows/ci.yaml"
     ><img
       alt="GitHub Workflow Status (with event)"
