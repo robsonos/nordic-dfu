@@ -76,10 +76,13 @@ export class ScanPage implements OnDestroy, OnInit {
     scan((acc: ScanResult[], curr: ScanResult | null) => {
       if (curr === null) return [];
       return [...acc, curr];
-    }, [])
+    }, []),
   );
 
-  constructor(@Inject(NgZone) private ngZone: NgZone, @Inject(ToastService) private toastService: ToastService) {}
+  constructor(
+    @Inject(NgZone) private ngZone: NgZone,
+    @Inject(ToastService) private toastService: ToastService,
+  ) {}
 
   async ngOnInit(): Promise<void> {
     try {
@@ -111,7 +114,7 @@ export class ScanPage implements OnDestroy, OnInit {
           services: [CONSTANTS.UUID128_SVC_NORDIC_UART],
           scanMode: ScanMode.SCAN_MODE_LOW_LATENCY,
         },
-        this.onBluetoothDeviceFound.bind(this)
+        this.onBluetoothDeviceFound.bind(this),
       );
 
       this.scanInterval = setInterval(() => {

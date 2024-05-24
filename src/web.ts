@@ -15,7 +15,7 @@ export class NordicDfuWeb extends WebPlugin implements NordicDfuPlugin {
   }
   addListener(
     _eventName: string,
-    _listenerFunc: ListenerCallback
+    _listenerFunc: ListenerCallback,
   ): Promise<PluginListenerHandle> & PluginListenerHandle {
     throw this.unavailable('Method not available in this browser.');
   }
