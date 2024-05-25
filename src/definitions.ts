@@ -473,7 +473,7 @@ export interface NordicDfuPlugin {
    */
   addListener(
     eventName: 'DFUStateChanged',
-    handler: (update: DfuUpdate) => void
+    handler: (update: DfuUpdate) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
 
   /**

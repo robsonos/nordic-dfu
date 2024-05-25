@@ -9,15 +9,25 @@ env:
 
 jobs:
   lint:
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+
+      - name: Install SwiftLint
+        run: |
+          brew install swiftlint
 
       - name: Lint
         run: yarn lint
@@ -33,7 +43,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: '.nvmrc'
           cache: 'yarn'
 
       - name: Install plugin dependencies
@@ -61,8 +71,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: '.nvmrc'
           cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -70,34 +83,28 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: 'zulu'
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
       - name: Verify
         run: yarn verify:android
 
   verify-ios:
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
+      - name: Set up Xcode
+        run: sudo xcode-select --switch /Applications/Xcode_15.4.app
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: '.nvmrc'
           cache: 'yarn'
-
-      - name: Set up Xcode
-        run: sudo xcode-select --switch /Applications/Xcode_14.2.app
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-
-      - name: Lint
-        run: yarn lint
 
       - name: Verify
         run: yarn verify:ios

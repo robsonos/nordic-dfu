@@ -10,14 +10,14 @@ export class LoadingService {
 
   constructor(private loadingController: LoadingController) {}
 
-  async presentLoading(message: string) {
+  async presentLoading(message: string): Promise<void> {
     this.loading = await this.loadingController.create({
       message,
     });
     await this.loading.present();
   }
 
-  async dismissLoading() {
+  async dismissLoading(): Promise<void> {
     if (this.loading) {
       await this.loading.dismiss();
       this.loading = null;

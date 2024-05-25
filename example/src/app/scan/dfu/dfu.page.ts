@@ -59,7 +59,11 @@ export class DfuPage {
   public file!: PickedFile | undefined;
   public update: DfuUpdate | undefined;
 
-  constructor(@Inject(NgZone) private ngZone: NgZone, private router: Router, private toastService: ToastService) {
+  constructor(
+    @Inject(NgZone) private ngZone: NgZone,
+    private router: Router,
+    private toastService: ToastService,
+  ) {
     const navigation = this.router.getCurrentNavigation();
 
     if (!navigation) {
@@ -112,7 +116,7 @@ export class DfuPage {
   }
 
   async updateFirmware(): Promise<void> {
-    if (!this.file || !this.file.path) {
+    if (!this.file?.path) {
       this.toastService.presentErrorToast('Pick a file first!');
       return;
     }
@@ -145,7 +149,7 @@ export class DfuPage {
       (error: PluginResultError) => {
         console.error(error);
         this.toastService.presentErrorToast(`Error starting DFU: ${JSON.stringify(error)}`);
-      }
+      },
     );
   }
 
