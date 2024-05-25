@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   cd:
-    runs-on: macos-12
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       issues: write
@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: '.nvmrc'
           cache: 'yarn'
 
       - name: Install dependencies
