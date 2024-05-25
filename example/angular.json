@@ -20,6 +20,7 @@
           "options": {
             "outputPath": "www",
             "index": "src/index.html",
+            "browser": "src/main.ts",
             "polyfills": ["src/polyfills.ts"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -30,9 +31,8 @@
                 "output": "assets"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
-            "scripts": [],
-            "browser": "src/main.ts"
+            "styles": ["src/global.scss", "src/theme/variables.scss"],
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -104,7 +104,7 @@
                 "output": "assets"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
+            "styles": ["src/global.scss", "src/theme/variables.scss"],
             "scripts": []
           },
           "configurations": {
