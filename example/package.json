@@ -10,7 +10,6 @@
     "mobile"
   ],
   "scripts": {
-    "postinstall": "yarn cache clean capacitor-community-nordic-dfu",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test"

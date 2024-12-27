@@ -4,6 +4,9 @@ import { WebPlugin, type PluginResultError, type ListenerCallback, type PluginLi
 import type { DfuUpdateOptions, NordicDfuPlugin, PermissionStatus } from './definitions';
 
 export class NordicDfuWeb extends WebPlugin implements NordicDfuPlugin {
+  removeAllListeners(): Promise<void> {
+    throw this.unavailable('Method not available in this browser.');
+  }
   startDFU(_dfuUpdateOptions: DfuUpdateOptions): Promise<void | PluginResultError> {
     throw this.unavailable('Method not available in this browser.');
   }

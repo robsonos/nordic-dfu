@@ -9,7 +9,7 @@ env:
 
 jobs:
   lint:
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,17 +20,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'yarn'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Install SwiftLint
         run: |
           brew install swiftlint
 
       - name: Lint
-        run: yarn lint
+        run: npm run lint
 
   build-example:
     runs-on: ubuntu-latest
@@ -44,20 +44,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'yarn'
+          cache: 'npm'
 
       - name: Install plugin dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Build plugin
-        run: yarn build
+        run: npm run build
 
       - name: Install example dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
         working-directory: example
 
       - name: Build example
-        run: yarn build
+        run: npm run build
         working-directory: example
 
   verify-android:
@@ -72,22 +72,23 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'yarn'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JAVA_VERSION }}
+          java-version-file: '.java-version'
           distribution: 'zulu'
 
       - name: Verify
-        run: yarn verify:android
+        run: npm run verify:android
 
   verify-ios:
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -101,13 +102,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'yarn'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Verify
-        run: yarn verify:ios
+        run: npm run verify:ios
 
   create-pr:
     runs-on: ubuntu-latest
