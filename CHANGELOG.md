@@ -1,3 +1,13 @@
+# [6.1.0](https://github.com/robsonos/nordic-dfu/compare/v6.0.0...v6.1.0) (2024-12-28)
+
+
+* Merge pull request #14 from robsonos/dev ([81a1f76](https://github.com/robsonos/nordic-dfu/commit/81a1f76a9538e7d5b00587a74a4ddd0f9c654bab)), closes [#14](https://github.com/robsonos/nordic-dfu/issues/14)
+
+
+### Features :sparkles:
+
+* force release for version 6.0.0 ([ba4c65e](https://github.com/robsonos/nordic-dfu/commit/ba4c65e5be06a995c215ca16b7950b543366d7d7))
+
 # [1.5.0](https://github.com/robsonos/nordic-dfu/compare/v1.4.0...v1.5.0) (2024-03-30)
 
 
