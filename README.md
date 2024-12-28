@@ -7,10 +7,10 @@
 
 <p align="center">
   <img src="https://img.shields.io/maintenance/yes/2024?style=flat-square" />
-  <a href="https://github.com/robsonos/nordic-dfu/actions/workflows/ci.yaml"
+  <a href="https://github.com/robsonos/nordic-dfu/actions/workflows/ci.yml"
     ><img
       alt="GitHub Workflow Status (with event)"
-      src="https://img.shields.io/github/actions/workflow/status/robsonos/nordic-dfu/ci.yaml"
+      src="https://img.shields.io/github/actions/workflow/status/robsonos/nordic-dfu/ci.yml"
   /></a>
   <a href="https://www.npmjs.com/package/capacitor-community-nordic-dfu"
     ><img src="https://img.shields.io/npm/l/capacitor-community-nordic-dfu?style=flat-square"
