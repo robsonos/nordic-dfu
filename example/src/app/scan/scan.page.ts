@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
 import { AsyncPipe } from '@angular/common';
-import { Component, Inject, NgZone, ViewChild, type OnDestroy, type OnInit } from '@angular/core';
+import { Component, inject, viewChild, type OnDestroy, type OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BleClient, ScanMode, type ScanResult } from '@capacitor-community/bluetooth-le';
 import {
@@ -14,10 +13,6 @@ import {
   IonGrid,
   IonList,
   IonItem,
-  IonItemSliding,
-  IonItemOption,
-  IonItemOptions,
-  IonButton,
   IonIcon,
   IonLabel,
   IonNote,
@@ -39,10 +34,8 @@ import { CONSTANTS } from '../shared/constants';
   selector: 'app-scan',
   templateUrl: 'scan.page.html',
   styleUrls: ['scan.page.scss'],
-  standalone: true,
   imports: [
     AsyncPipe,
-    RouterLink,
     IonRouterLink,
     IonHeader,
     IonToolbar,
@@ -53,21 +46,21 @@ import { CONSTANTS } from '../shared/constants';
     IonGrid,
     IonList,
     IonItem,
-    IonItemSliding,
-    IonItemOption,
-    IonItemOptions,
-    IonButton,
     IonIcon,
     IonLabel,
     IonNote,
     IonProgressBar,
     IonRefresher,
     IonRefresherContent,
+    RouterLink,
   ],
 })
 export class ScanPage implements OnDestroy, OnInit {
+  private readonly toastService = inject(ToastService);
+  // private readonly ngZone = inject(NgZone);
+
   /* This is used for stopping the scan before the user leaves the page */
-  @ViewChild('scanRefresher', { static: false }) scanRefresher!: IonRefresher;
+  scanRefresher = viewChild.required<IonRefresher>('scanRefresher');
 
   scanInterval!: ReturnType<typeof setInterval>;
   scanProgress = 0;
@@ -78,11 +71,6 @@ export class ScanPage implements OnDestroy, OnInit {
       return [...acc, curr];
     }, []),
   );
-
-  constructor(
-    @Inject(NgZone) private ngZone: NgZone,
-    @Inject(ToastService) private toastService: ToastService,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     try {
@@ -127,20 +115,21 @@ export class ScanPage implements OnDestroy, OnInit {
       }, stopScanAfterMilliSeconds);
     } catch (error) {
       this.toastService.presentErrorToast(`Error scanning for devices: ${JSON.stringify(error)}`);
+      this.stopScanForBluetoothDevices();
     }
   }
 
   async stopScanForBluetoothDevices(): Promise<void> {
     await BleClient.stopLEScan();
-    this.scanRefresher.complete();
+    this.scanRefresher().complete();
     this.scanProgress = 0;
     clearInterval(this.scanInterval);
   }
 
   onBluetoothDeviceFound(result: ScanResult): void {
-    this.ngZone.run(() => {
-      this.scanResultSubject.next(result);
-    });
+    // this.ngZone.run(() => {
+    this.scanResultSubject.next(result);
+    // });
   }
 
   getRssiIcon(rssi: number): string {

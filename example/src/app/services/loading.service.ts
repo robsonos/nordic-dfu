@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoadingService {
-  loading!: HTMLIonLoadingElement | null;
+  private loadingController = inject(LoadingController);
 
-  constructor(private loadingController: LoadingController) {}
+  loading!: HTMLIonLoadingElement | null;
 
   async presentLoading(message: string): Promise<void> {
     this.loading = await this.loadingController.create({
