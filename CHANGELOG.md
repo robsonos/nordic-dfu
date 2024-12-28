@@ -1,3 +1,23 @@
+# [1.6.0](https://github.com/robsonos/nordic-dfu/compare/v1.5.0...v1.6.0) (2024-12-28)
+
+
+### build
+
+* fix github actions ([01decd1](https://github.com/robsonos/nordic-dfu/commit/01decd11c7b6b300ef5efa6047ed84af83927221))
+* undo ([8083da2](https://github.com/robsonos/nordic-dfu/commit/8083da23b0ee2fb0c9937e8fe8af184ddefe8965))
+* update environment dependencies ([da1b1ac](https://github.com/robsonos/nordic-dfu/commit/da1b1ac97bed82cce38316360dca8c2b4850f0e0))
+* update example dependencies ([b7341b5](https://github.com/robsonos/nordic-dfu/commit/b7341b54a98e7885946e3fdad9bcf9c8fbe85871))
+* update plugin node dependencies ([d9ae875](https://github.com/robsonos/nordic-dfu/commit/d9ae875ea2f8929673b4a4a76b4043697b965f81))
+
+
+* Merge pull request #12 from robsonos/dev ([9a9af66](https://github.com/robsonos/nordic-dfu/commit/9a9af66df753d2fbfd8135dc32d50b075916975b)), closes [#12](https://github.com/robsonos/nordic-dfu/issues/12)
+
+
+### Features :sparkles:
+
+* update capacitor version ([fe6d3ce](https://github.com/robsonos/nordic-dfu/commit/fe6d3ce312201e1aa37d9e0ffdfc679c4491ac85))
+* update mobile platform dependencies ([4c0e91a](https://github.com/robsonos/nordic-dfu/commit/4c0e91a2fbaf3a1d393c6db89452a76e5f94b2f3))
+
 # [1.5.0](https://github.com/robsonos/nordic-dfu/compare/v1.4.0...v1.5.0) (2024-03-30)
 
 
