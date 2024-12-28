@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-import { AsyncPipe, DecimalPipe } from '@angular/common';
-import { Component, Inject, NgZone } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { type PluginResultError } from '@capacitor/core';
 import { Directory, Filesystem } from '@capacitor/filesystem';
@@ -21,10 +20,8 @@ import {
   IonText,
   IonNote,
   IonProgressBar,
-  IonSegment,
-  IonSegmentButton,
 } from '@ionic/angular/standalone';
-import { NordicDfu, type DfuUpdateOptions, DfuOptions, DfuUpdate } from 'capacitor-community-nordic-dfu';
+import { NordicDfu, type DfuUpdateOptions, type DfuOptions, type DfuUpdate } from 'capacitor-community-nordic-dfu';
 
 import { ToastService } from '../../services/toast.service';
 
@@ -32,9 +29,7 @@ import { ToastService } from '../../services/toast.service';
   selector: 'app-dfu',
   templateUrl: 'dfu.page.html',
   styleUrls: ['dfu.page.scss'],
-  standalone: true,
   imports: [
-    AsyncPipe,
     DecimalPipe,
     IonHeader,
     IonToolbar,
@@ -50,20 +45,18 @@ import { ToastService } from '../../services/toast.service';
     IonText,
     IonNote,
     IonProgressBar,
-    IonSegment,
-    IonSegmentButton,
   ],
 })
 export class DfuPage {
+  // private readonly ngZone = inject(NgZone);
+  private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
+
   public device!: BleDevice;
   public file!: PickedFile | undefined;
   public update: DfuUpdate | undefined;
 
-  constructor(
-    @Inject(NgZone) private ngZone: NgZone,
-    private router: Router,
-    private toastService: ToastService,
-  ) {
+  constructor() {
     const navigation = this.router.getCurrentNavigation();
 
     if (!navigation) {
@@ -105,9 +98,9 @@ export class DfuPage {
   async ionViewWillEnter(): Promise<void> {
     await NordicDfu.addListener('DFUStateChanged', async (update: DfuUpdate) => {
       console.log(`DFU: state: ${update.state}, data: ${JSON.stringify(update.data)}`);
-      this.ngZone.run(() => {
-        this.update = update;
-      });
+      // this.ngZone.run(() => {
+      this.update = update;
+      // });
     });
   }
 

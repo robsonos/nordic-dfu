@@ -128,13 +128,13 @@ nvm install 18
 node global packages:
 
 ```
-yarn global add @ionic/cli @angular/cli
+npm i -g add @ionic/cli @angular/cli
 ```
 
 ### Installation
 
 - Fork and clone the repo
-- Install the dependencies: `yarn`
+- Install the dependencies: `npm i`
 
 ## Scripts
 
