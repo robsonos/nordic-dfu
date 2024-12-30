@@ -1,4 +1,9 @@
 {
-  "projectName": "<insert the repo's name>",
-  "projectOwner": "<insert the repo's owner/orgs>"
+  "projectName": "capacitor-community-nordic-dfu",
+  "projectOwner": "ronsonos",
+  "commit": true,
+  "linkToUsage": true,
+  "skipCi": true,
+  "repoType": "github",
+  "commitConvention": "angular"
 }

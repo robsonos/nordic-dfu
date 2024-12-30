@@ -6,29 +6,44 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/maintenance/yes/2024?style=flat-square" />
-  <a href="https://github.com/robsonos/nordic-dfu/actions/workflows/ci.yml"
-    ><img
+  <img 
+      alt="Maintenance status"
+      src="https://img.shields.io/maintenance/yes/2024?style=flat-square"/>
+  <a
+    href="https://github.com/robsonos/nordic-dfu/actions/workflows/ci.yml"
+    style="color: inherit; text-decoration: none;">
+    <img
       alt="GitHub Workflow Status (with event)"
-      src="https://img.shields.io/github/actions/workflow/status/robsonos/nordic-dfu/ci.yml"
-  /></a>
-  <a href="https://www.npmjs.com/package/capacitor-community-nordic-dfu"
-    ><img src="https://img.shields.io/npm/l/capacitor-community-nordic-dfu?style=flat-square"
-  /></a>
+      src="https://img.shields.io/github/actions/workflow/status/robsonos/nordic-dfu/ci.yml"/>
+  </a>
+  <a
+    href="https://www.npmjs.com/package/capacitor-community-nordic-dfu"
+    style="color: inherit; text-decoration: none;">
+    <img
+      alt="GitHub License"
+      src="https://img.shields.io/npm/l/capacitor-community-nordic-dfu?style=flat-square"/>
+  </a>
   <br />
-  <a href="https://www.npmjs.com/package/capacitor-community-nordic-dfu"
-    ><img
+  <a
+    href="https://www.npmjs.com/package/capacitor-community-nordic-dfu"
+    style="color: inherit; text-decoration: none;">
+    <img
+      alt="Version from npmjs"
+      src="https://img.shields.io/npm/v/capacitor-community-nordic-dfu?style=flat-square"/>
+  </a>
+  <a
+    href="https://www.npmjs.com/package/capacitor-community-nordic-dfu"
+    style="color: inherit; text-decoration: none;">
+    <img
       alt="Downloads from npmjs"
-      src="https://img.shields.io/npm/dw/capacitor-community-nordic-dfu?style=flat-square"
-  /></a>
-  <a href="https://www.npmjs.com/package/capacitor-community-nordic-dfu"
-    ><img alt="Version from npmjs" src="https://img.shields.io/npm/v/capacitor-community-nordic-dfu?style=flat-square"
-  /></a>
+      src="https://img.shields.io/npm/dw/capacitor-community-nordic-dfu?style=flat-square"/>
+  </a>
   <a href="#contributors"
-    ><img
+    style="color: inherit; text-decoration: none;">
+    <img
       alt="GitHub contributors from allcontributors.org"
-      src="https://img.shields.io/github/all-contributors/robsonos/nordic-dfu"
-  /></a>
+      src="https://img.shields.io/github/all-contributors/robsonos/nordic-dfu">
+  </a>
 </p>
 
 ## Table of Contents
