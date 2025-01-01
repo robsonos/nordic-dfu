@@ -49,6 +49,7 @@
 ## Table of Contents
 
 - [Maintainers](#maintainers)
+- [Versions](#versions)
 - [Installation](#installation)
 - [Permissions](#permissions)
 - [API](#api)
@@ -59,6 +60,13 @@
 | Maintainer | GitHub                                  | Active |
 | ---------- | --------------------------------------- | ------ |
 | robsonos   | [robsonos](https://github.com/robsonos) | yes    |
+
+## Versions
+
+| Plugin | Capacitor |
+| ------ | --------- |
+| 7.x    | 7.x       |
+| 6.x    | 6.x       |
 
 ## Installation
 
