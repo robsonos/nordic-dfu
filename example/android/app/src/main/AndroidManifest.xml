@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation"
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBarLaunch"
@@ -56,8 +56,8 @@
 
     <!-- Location permission is required from Android 6 to 11 to be able to scan for advertising Bluetooth LE devices. -->
     <!-- Controller: Client must have ACCESS_FINE_LOCATION permission to request PRIORITY_HIGH_ACCURACY location -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30" />
 
     <!-- BLUETOOTH_SCAN permission is needed from Android 12 to scan for Bluetooth LE devices. -->
     <uses-permission
