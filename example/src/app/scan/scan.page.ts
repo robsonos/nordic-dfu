@@ -74,7 +74,7 @@ export class ScanPage implements OnDestroy, OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      await BleClient.initialize();
+      await BleClient.initialize({ androidNeverForLocation: true });
     } catch (error) {
       this.toastService.presentErrorToast(`Error initializing bluetooth: ${JSON.stringify(error)}`);
     }
@@ -114,7 +114,8 @@ export class ScanPage implements OnDestroy, OnInit {
         this.stopScanForBluetoothDevices();
       }, stopScanAfterMilliSeconds);
     } catch (error) {
-      this.toastService.presentErrorToast(`Error scanning for devices: ${JSON.stringify(error)}`);
+      console.error(error);
+      this.toastService.presentErrorToast(`Error scanning for devices: ${error}`);
       this.stopScanForBluetoothDevices();
     }
   }
