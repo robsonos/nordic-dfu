@@ -75,14 +75,14 @@ Please check the sample permissions in [Android](./example/android/app/src/main/
 
 <docgen-index>
 
-* [`startDFU(...)`](#startdfu)
-* [`checkPermissions()`](#checkpermissions)
-* [`requestPermissions()`](#requestpermissions)
-* [`addListener('DFUStateChanged', ...)`](#addlistenerdfustatechanged)
-* [`removeAllListeners()`](#removealllisteners)
-* [Interfaces](#interfaces)
-* [Type Aliases](#type-aliases)
-* [Enums](#enums)
+- [`startDFU(...)`](#startdfu)
+- [`checkPermissions()`](#checkpermissions)
+- [`requestPermissions()`](#requestpermissions)
+- [`addListener('DFUStateChanged', ...)`](#addlistenerdfustatechanged-)
+- [`removeAllListeners()`](#removealllisteners)
+- [Interfaces](#interfaces)
+- [Type Aliases](#type-aliases)
+- [Enums](#enums)
 
 </docgen-index>
 
@@ -108,8 +108,7 @@ Initiates the DFU process with the specified options.
 
 **Since:** 1.0.0
 
---------------------
-
+---
 
 ### checkPermissions()
 
@@ -123,8 +122,7 @@ Check status of permissions needed by the plugin
 
 **Since:** 1.0.0
 
---------------------
-
+---
 
 ### requestPermissions()
 
@@ -138,8 +136,7 @@ Request permissions needed by the plugin
 
 **Since:** 1.0.0
 
---------------------
-
+---
 
 ### addListener('DFUStateChanged', ...)
 
@@ -158,8 +155,7 @@ Listen for when the DFU state changes
 
 **Since:** 1.0.0
 
---------------------
-
+---
 
 ### removeAllListeners()
 
@@ -171,18 +167,15 @@ Removes all listeners for the DFUStateChanged event
 
 **Since:** 1.0.0
 
---------------------
-
+---
 
 ### Interfaces
-
 
 #### PluginResultError
 
 | Prop          | Type                |
 | ------------- | ------------------- |
 | **`message`** | <code>string</code> |
-
 
 #### DfuUpdateOptions
 
@@ -194,7 +187,6 @@ Specifies the options required for initiating the DFU process.
 | **`deviceName`**    | <code>string</code>                               | The name of the device                                                                                                                    | 1.0.0 |
 | **`filePath`**      | <code>string</code>                               | The path to the firmware file                                                                                                             | 1.0.0 |
 | **`dfuOptions`**    | <code><a href="#dfuoptions">DfuOptions</a></code> | The additional options for the DFU process                                                                                                | 1.0.0 |
-
 
 #### DfuOptions
 
@@ -222,7 +214,6 @@ Outlines additional options for configuring the DFU process.
 | **`mbrSize`**                                               | <code>number</code>  | This method sets the size of an MBR (Master Boot Record). It should be used only when updating a file from a HEX file. If you use BIN or ZIP, value set here will be ignored.                                                                                                                                                                                                                                                                      | <code>4096</code>  | 1.0.0 |
 | **`unsafeExperimentalButtonlessServiceInSecureDfuEnabled`** | <code>boolean</code> | Set this flag to true to enable experimental buttonless feature in Secure DFU. When the experimental Buttonless DFU Service is found on a device, the service will use it to switch the device to the bootloader mode, connect to it in that mode and proceed with DFU.                                                                                                                                                                            | <code>false</code> | 1.0.0 |
 
-
 #### PermissionStatus
 
 Represents the current status of permissions in the plugin.
@@ -231,13 +222,11 @@ Represents the current status of permissions in the plugin.
 | ------------------- | ----------------------------------------------------------- | ------------------------------------------------ | ----- |
 | **`notifications`** | <code><a href="#permissionstate">PermissionState</a></code> | Indicates the permission state of notifications. | 1.0.0 |
 
-
 #### PluginListenerHandle
 
 | Prop         | Type                                      |
 | ------------ | ----------------------------------------- |
 | **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
-
 
 #### DfuUpdate
 
@@ -247,7 +236,6 @@ The DFU update object that is passed to the DFUStateChanged event
 | ----------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------ | ----- |
 | **`state`** | <code><a href="#dfustate">DfuState</a></code>           | Defines the structure for the DFU update object passed to the DFUStateChanged event. | 1.0.0 |
 | **`data`**  | <code><a href="#dfuupdatedata">DfuUpdateData</a></code> | The DFU data that is passed to the <a href="#dfuupdate">DfuUpdate</a> object         | 1.0.0 |
-
 
 #### DfuUpdateData
 
@@ -263,17 +251,13 @@ Contains data related to the DFU update process, such as progress and speed.
 | **`duration`**      | <code>number</code> | The total time elapsed since the start of the DFU process in milliseconds                                                                                                                                                     | 1.1.0 |
 | **`remainingTime`** | <code>number</code> | The estimated remaining time to the end of the DFU process in milliseconds                                                                                                                                                    | 1.1.0 |
 
-
 ### Type Aliases
-
 
 #### PermissionState
 
 <code>'prompt' | 'prompt-with-rationale' | 'granted' | 'denied'</code>
 
-
 ### Enums
-
 
 #### DfuState
 
