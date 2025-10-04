@@ -1,3 +1,29 @@
+# [7.0.0](https://github.com/robsonos/nordic-dfu/compare/v6.1.0...v7.0.0) (2025-10-04)
+
+
+### Documentation :books:
+
+* fix readme [skip ci] ([14d4821](https://github.com/robsonos/nordic-dfu/commit/14d48216d42f5582cff09883e38ee87a4b05503c))
+* fix readme [skip ci] ([6e769ca](https://github.com/robsonos/nordic-dfu/commit/6e769ca4dc654a9f146a824956985a1ad672c6dd))
+
+
+* Merge pull request #17 from robsonos/dev ([dfd5dcc](https://github.com/robsonos/nordic-dfu/commit/dfd5dcc226bb7b736a48cb67f5a983b9eecc85c2)), closes [#17](https://github.com/robsonos/nordic-dfu/issues/17)
+
+
+### Features :sparkles:
+
+* bump major version to align with capacitor version ([5d071af](https://github.com/robsonos/nordic-dfu/commit/5d071af93a0a72aa7117b84f0da8efe85e0d7403))
+* update android implementation on example ([1fb7e6f](https://github.com/robsonos/nordic-dfu/commit/1fb7e6fd841f9d00cae6c35265585e761219b485))
+* update capacitor version and tech stack ([44a9a62](https://github.com/robsonos/nordic-dfu/commit/44a9a62098e2ac0355030f4bfeffc8f059bff5e1))
+* update iOS implementation ([76f6a2a](https://github.com/robsonos/nordic-dfu/commit/76f6a2aa8b881cf5ff0ec9d9db301e8e8f9cf0de))
+* update NordicDFU version on Android ([9537b77](https://github.com/robsonos/nordic-dfu/commit/9537b77d024aa763ef188646a0e998b020d144cd))
+* update tech stack on example ([e624475](https://github.com/robsonos/nordic-dfu/commit/e6244759bcba8ca1715ba1dc0a739721c5351d80))
+
+
+### BREAKING CHANGE
+
+*
+
 # [6.1.0](https://github.com/robsonos/nordic-dfu/compare/v6.0.0...v6.1.0) (2024-12-28)
 
 
