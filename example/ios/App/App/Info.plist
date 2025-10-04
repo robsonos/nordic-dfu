@@ -51,7 +51,7 @@
 	<string>$(PRODUCT_NAME) uses photos</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) uses photos</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>We use Bluetooth to connect to and update your devices.</string>
+  	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Uses Bluetooth to connect and interact with peripheral BLE devices.</string>
 </dict>
 </plist>

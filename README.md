@@ -8,7 +8,7 @@
 <p align="center">
   <img 
       alt="Maintenance status"
-      src="https://img.shields.io/maintenance/yes/2024?style=flat-square"/>
+      src="https://img.shields.io/maintenance/yes/2025?style=flat-square"/>
   <a
     href="https://github.com/robsonos/nordic-dfu/actions/workflows/ci.yml"
     style="color: inherit; text-decoration: none;">

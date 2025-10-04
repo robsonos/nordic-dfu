@@ -1,7 +1,7 @@
 import Capacitor
+import NordicDFU
 import CoreBluetooth
 import Foundation
-import NordicDFU
 import UserNotifications
 
 @objc(NordicDfuPlugin)
@@ -66,15 +66,24 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
         if let options = notificationRequestLookup[notification.request.identifier] {
             let silent = options["silent"] as? Bool ?? false
             if silent {
-                return UNNotificationPresentationOptions(rawValue: 0)
+                return []
             }
         }
 
-        return [
-            .badge,
-            .sound,
-            .alert
-        ]
+        if #available(iOS 14.0, *) {
+            return [
+                .badge,
+                .sound,
+                .banner,
+                .list
+            ]
+        } else {
+            return [
+                .badge,
+                .sound,
+                .alert
+            ]
+        }
     }
 
     public func didReceive(response: UNNotificationResponse) {

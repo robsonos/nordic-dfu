@@ -103,60 +103,60 @@ jobs:
       - name: Verify
         run: npm run verify:ios
 
-  create-pr:
-    runs-on: ubuntu-latest
-    needs: [lint, verify-ios, verify-android, build-example]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  # create-pr:
+  #   runs-on: ubuntu-latest
+  #   needs: [lint, verify-ios, verify-android, build-example]
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
 
-      - name: Create pull or update pull request
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const head = context.payload.ref.replace('refs/heads/', '');
-            const base = 'main';
-            const title = 'Merge ' + head + ' into ' + base + ' 🔀';
-            const body = 'This is an automated PR';
+  #     - name: Create pull or update pull request
+  #       uses: actions/github-script@v7
+  #       with:
+  #         script: |
+  #           const head = context.payload.ref.replace('refs/heads/', '');
+  #           const base = 'main';
+  #           const title = 'Merge ' + head + ' into ' + base + ' 🔀';
+  #           const body = 'This is an automated PR';
 
-            async function run() {
-              try {
-                const { data: pulls } = await github.rest.pulls.list({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  state: 'open',
-                  head: context.repo.owner + ':' + head,
-                  base: base
-                });
+  #           async function run() {
+  #             try {
+  #               const { data: pulls } = await github.rest.pulls.list({
+  #                 owner: context.repo.owner,
+  #                 repo: context.repo.repo,
+  #                 state: 'open',
+  #                 head: context.repo.owner + ':' + head,
+  #                 base: base
+  #               });
 
-                if (pulls.length > 0) {
-                  const pullNumber = pulls[0].number;
-                  console.log(`Updating existing PR #${pullNumber}`);
+  #               if (pulls.length > 0) {
+  #                 const pullNumber = pulls[0].number;
+  #                 console.log(`Updating existing PR #${pullNumber}`);
 
-                  await github.rest.pulls.update({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    pull_number: pullNumber,
-                    title: title,
-                    body: body
-                  });
-                } else {
-                  console.log('Creating new PR');
-                  await github.rest.pulls.create({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    title: title,
-                    body: body,
-                    head: head,
-                    base: base
-                  });
-                }
-              } catch (error) {
-                console.error('Error processing pull request:', error);
-                throw error;
-              }
-            }
+  #                 await github.rest.pulls.update({
+  #                   owner: context.repo.owner,
+  #                   repo: context.repo.repo,
+  #                   pull_number: pullNumber,
+  #                   title: title,
+  #                   body: body
+  #                 });
+  #               } else {
+  #                 console.log('Creating new PR');
+  #                 await github.rest.pulls.create({
+  #                   owner: context.repo.owner,
+  #                   repo: context.repo.repo,
+  #                   title: title,
+  #                   body: body,
+  #                   head: head,
+  #                   base: base
+  #                 });
+  #               }
+  #             } catch (error) {
+  #               console.error('Error processing pull request:', error);
+  #               throw error;
+  #             }
+  #           }
 
-            run();
+  #           run();
