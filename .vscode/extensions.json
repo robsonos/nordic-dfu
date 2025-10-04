@@ -4,12 +4,14 @@
     "angular.ng-template",
     "eamodio.gitlens",
     "esbenp.prettier-vscode",
+    "github.vscode-github-actions",
     "gruntfuggly.todo-tree",
-    "ionic.ionic",
     "streetsidesoftware.code-spell-checker",
+    "swiftlang.swift-vscode",
     "vscjava.vscode-java-pack",
     "mpotthoff.vscode-android-webview-debug",
     "nisargjhaveri.ios-debug",
-    "vknabel.vscode-swiftformat"
+    "vknabel.vscode-swiftformat",
+    "webnative.webnative"
   ]
 }

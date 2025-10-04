@@ -12,4 +12,4 @@ include ':capawesome-capacitor-file-picker'
 project(':capawesome-capacitor-file-picker').projectDir = new File('../node_modules/@capawesome/capacitor-file-picker/android')
 
 include ':capacitor-community-nordic-dfu'
-project(':capacitor-community-nordic-dfu').projectDir = new File('../node_modules/capacitor-community-nordic-dfu/android')
+project(':capacitor-community-nordic-dfu').projectDir = new File('../../android')
