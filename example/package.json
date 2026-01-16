@@ -15,7 +15,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "ionic": "ionic"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -52,7 +53,7 @@
     "@angular/cli": "^20.0.0",
     "@angular/compiler-cli": "^20.0.0",
     "@angular/language-service": "^20.0.0",
-    "@capacitor/cli": "^7.0.0",
+    "@capacitor/cli": "^7.4.2",
     "@ionic/angular-toolkit": "^12.0.0",
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
