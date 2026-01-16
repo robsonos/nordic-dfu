@@ -200,9 +200,13 @@ export interface DfuOptions {
   disableNotification?: boolean;
 
   /**
-   * Sets whether the progress notification in the status bar should be disabled.
+   * Sets whether the DFU service should be started as a foreground service.
    *
-   * @default  false
+   * By default it's true. According to https://developer.android.com/about/versions/oreo/background.html
+   * the background service may be killed by the system on Android Oreo after user quits the application so
+   * it is recommended to keep it as a foreground service (default) at least on Android Oreo+.
+   *
+   * @default true
    * @since 1.0.0
    */
   startAsForegroundService?: boolean;
