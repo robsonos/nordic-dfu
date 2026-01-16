@@ -65,5 +65,5 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation "androidx.core:core-ktx:$coreKtx"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "no.nordicsemi.android:dfu:2.9.0"
+    implementation "no.nordicsemi.android:dfu:2.10.1"
 }

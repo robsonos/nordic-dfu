@@ -187,8 +187,6 @@ public class NordicDfuPlugin extends Plugin {
             }
         }
 
-        starter.disableMtuRequest();
-
         if (filePath.endsWith(".bin") || filePath.endsWith(".hex")) {
             starter.setBinOrHex(DfuBaseService.TYPE_APPLICATION, filePath).setInitFile(null, null);
         } else {
