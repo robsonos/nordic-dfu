@@ -1,3 +1,25 @@
+# [7.1.0](https://github.com/robsonos/nordic-dfu/compare/v7.0.0...v7.1.0) (2026-01-17)
+
+
+### Bug Fixes :bug:
+
+* lock capacitor version to 7.4.2 to prevent SPM incompatibilities ([570acd2](https://github.com/robsonos/nordic-dfu/commit/570acd2750f6b10a773863b31a84bd0a79ed50a5))
+* respect disableMtuRequest dfu option ([44f4fad](https://github.com/robsonos/nordic-dfu/commit/44f4fad240f66b8797ea63b9284e9679d444795d))
+
+
+### Documentation :books:
+
+* fix startAsForegroundService docs ([53f5487](https://github.com/robsonos/nordic-dfu/commit/53f5487b4bff2325f4aa761820ef8b21450f8ed4)), closes [#18](https://github.com/robsonos/nordic-dfu/issues/18)
+
+
+* Merge pull request #21 from robsonos/dev ([7820c12](https://github.com/robsonos/nordic-dfu/commit/7820c1239b83f31c056eab0aa3de72d7b10464dd)), closes [#21](https://github.com/robsonos/nordic-dfu/issues/21) [#18](https://github.com/robsonos/nordic-dfu/issues/18) [#19](https://github.com/robsonos/nordic-dfu/issues/19) [#20](https://github.com/robsonos/nordic-dfu/issues/20)
+* Merge branch 'remove-disabling-mtu' of https://github.com/microbit-grace/nordic-dfu into dev ([30d5cab](https://github.com/robsonos/nordic-dfu/commit/30d5cab79c590ae53c97c95590ec2c28cbf17e26))
+
+
+### Features :sparkles:
+
+* update Android-DFU-Library dependency version ([409afd4](https://github.com/robsonos/nordic-dfu/commit/409afd4e38453e20b721e944284c0f62e3c28a75))
+
 # [7.0.0](https://github.com/robsonos/nordic-dfu/compare/v6.1.0...v7.0.0) (2025-10-04)
 
 
