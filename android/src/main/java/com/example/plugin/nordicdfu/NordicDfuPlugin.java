@@ -42,9 +42,9 @@ public class NordicDfuPlugin extends Plugin {
     @PluginMethod
     public void startDFU(PluginCall call) {
         JSObject data = call.getData();
-        String deviceAddress = (String) data.opt("deviceAddress");
-        String deviceName = (String) data.opt("deviceName");
-        String filePath = (String) data.opt("filePath");
+        String deviceAddress = data.optString("deviceAddress");
+        String deviceName = data.has("deviceName") ? data.optString("deviceName") : null;
+        String filePath = data.optString("filePath");
 
         if (deviceAddress == null || deviceAddress.isEmpty()) {
             call.reject("deviceAddress is required");
