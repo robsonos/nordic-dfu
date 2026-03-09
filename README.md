@@ -85,7 +85,10 @@ npx cap sync
 
 ## Permissions
 
-Please check the sample permissions in [Android](./example/android/app/src/main/AndroidManifest.xml) and [iOS](./example/ios/App/App/Info.plist) folders.
+Configure the permissions required by the plugin in your app:
+
+- **Android:** Add the permissions used by the plugin (e.g. Bluetooth, notifications) in your app’s `AndroidManifest.xml`. The plugin’s own manifest is at [android/src/main/AndroidManifest.xml](./android/src/main/AndroidManifest.xml).
+- **iOS:** Add the required usage descriptions and capabilities in your app’s `Info.plist` (e.g. Bluetooth usage description).
 
 ## API
 

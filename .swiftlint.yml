@@ -1,9 +1,6 @@
 excluded:
   - 'node_modules'
   - 'ios/Pods'
-  - 'example/node_modules'
-  - 'example/ios/App/Pods'
-  - 'example/ios/DerivedData'
 
 opt_in_rules:
   - 'implicitly_unwrapped_optional'
