@@ -29,9 +29,7 @@
     "eslint": "eslint . --ext ts",
     "prettier": "prettier \"**/*.{css,html,ts,js}\"",
     "swiftlint": "node-swiftlint",
-    "docgen": "docgen --api NordicDfuPlugin --output-readme README.md --output-json dist/docs.json",
-    "postdocgen": "prettier README.md --write",
-    "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.mjs",
+    "build": "npm run clean && tsc && rollup -c rollup.config.mjs",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
     "test": "echo \"No test specified\"",
@@ -41,7 +39,6 @@
   "devDependencies": {
     "@capacitor/android": "^8.2.0",
     "@capacitor/core": "^8.2.0",
-    "@capacitor/docgen": "^0.3.1",
     "@capacitor/ios": "^8.2.0",
     "@ionic/eslint-config": "^0.4.0",
     "@ionic/prettier-config": "^4.0.0",
