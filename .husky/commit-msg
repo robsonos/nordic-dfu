@@ -1,4 +1,0 @@
-# Skip hook on CI environments
-[ -n "$CI" ] && exit 0
-
-npx --no -- commitlint --edit ${1}
