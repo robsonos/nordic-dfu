@@ -28,7 +28,7 @@
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
     "verify:ios": "set -o pipefail && cd ios && pod install && xcodebuild clean build test -workspace Plugin.xcworkspace -scheme Plugin -destination \"platform=iOS Simulator,name=iPhone 17\" | xcpretty && cd ..",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
-    "verify:web": "npm run build",
+    "verify:web": "npm run build:clean",
     "lint": "npm run eslint && npm run prettier -- --check && npm run lint:ios",
     "lint:ios": "npm run swiftlint -- lint ios",
     "lint:android": "cd android && ./gradlew clean lint && cd ..",
@@ -36,12 +36,13 @@
     "eslint": "eslint . --ext ts",
     "prettier": "prettier \"**/*.{css,html,ts,js}\"",
     "swiftlint": "node-swiftlint",
-    "build": "npm run clean && tsc && rollup -c rollup.config.mjs",
-    "clean": "rimraf ./dist",
+    "build": "tsc && rollup -c rollup.config.mjs",
+    "build:clean": "npm run clean && npm run build",
+    "clean": "rimraf \"dist/*\"",
     "watch": "tsc --watch",
     "test": "echo \"No test specified\"",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build:clean"
   },
   "devDependencies": {
     "@capacitor/android": "^8.2.0",
