@@ -215,9 +215,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
             if isZip {
                 firmware = try DFUFirmware(urlToZipFile: fileURL)
             } else {
-                // firmware = try DFUFirmware(urlToBinOrHexFile: hexUrl,
-                //                            urlToDatFile: iniUrl,
-                //                            type: .application) // TODO:
+                // Only zip files supported for now; bin/hex would need init file mapping.
                 call.reject("Only zip files supported at the moment!")
                 return
             }
@@ -311,12 +309,16 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
             //     starter.setMbrSize(dfuOptions.optInt("mbrSize"));
             // }
 
-            if let enableUnsafeExperimentalButtonlessServiceInSecureDfu = dfuOption["unsafeExperimentalButtonlessServiceInSecureDfuEnabled"] as? Bool {
-                starter.enableUnsafeExperimentalButtonlessServiceInSecureDfu = enableUnsafeExperimentalButtonlessServiceInSecureDfu
+            if let enableUnsafe = dfuOption["unsafeExperimentalButtonlessServiceInSecureDfuEnabled"] as? Bool {
+                starter.enableUnsafeExperimentalButtonlessServiceInSecureDfu = enableUnsafe
             }
         }
-        let deviceUUID = UUID(uuidString: deviceAddress) ?? nil
-        let peripherals = manager!.retrievePeripherals(withIdentifiers: [deviceUUID!])
+        let deviceUUID = UUID(uuidString: deviceAddress)
+        guard let centralManager = manager, let uuid = deviceUUID else {
+            call.reject(deviceUUID == nil ? "Invalid device address" : "Bluetooth not available")
+            return
+        }
+        let peripherals = centralManager.retrievePeripherals(withIdentifiers: [uuid])
         if peripherals.count < 1 {
             call.reject("Peripheral not found!")
             return
@@ -335,7 +337,7 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
 
         center.requestAuthorization(options: [.badge, .alert, .sound]) { granted, error in
             guard error == nil else {
-                call.reject(error!.localizedDescription)
+                call.reject(error?.localizedDescription ?? "Unknown error")
                 return
             }
 

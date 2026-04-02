@@ -1,5 +1,4 @@
 .idea/
-dist
 .sourcemaps
 xcuserdata/
 node_modules/
@@ -9,13 +8,6 @@ test_project/
 *.map
 .DS_Store
 Podfile.lock
-example/www/
-example/electron/www/*
-example/electron/capacitor.config.json
-example/android/app/src/main/assets/public/*
-!example/android/app/src/main/assets/public/.gitkeep
-example/ios/IonicRunner/public/*
-!example/ios/IonicRunner/public/.gitkeep
 Build/*
 Index/
 .*.sw*

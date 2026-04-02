@@ -67,9 +67,28 @@ npm install capacitor-community-nordic-dfu
 npx cap sync
 ```
 
+### Install from GitHub (fork)
+
+If you want to consume this plugin directly from a GitHub repository (for example, a fork that targets Capacitor v8), you can add it as a git dependency:
+
+```bash
+npm install git+https://github.com/msrsen1/nordic-dfu/tree/capacitor-v7-to-v8
+
+npx cap sync
+```
+
+**Recommendations:**
+
+- Pin to a stable **tag** or long‑lived branch (for example `v8.0.0` or `v8`) instead of `main` to avoid unexpected breaking changes.
+- Ensure your app uses **Node `>=22.0.0`** (as declared in this plugin's `engines` field).
+- Ensure your app is on **Capacitor 8** (`@capacitor/core@^8`, `@capacitor/ios@^8`, `@capacitor/android@^8`).
+
 ## Permissions
 
-Please check the sample permissions in [Android](./example/android/app/src/main/AndroidManifest.xml) and [iOS](./example/ios/App/App/Info.plist) folders.
+Configure the permissions required by the plugin in your app:
+
+- **Android:** Add the permissions used by the plugin (e.g. Bluetooth, notifications) in your app’s `AndroidManifest.xml`. The plugin’s own manifest is at [android/src/main/AndroidManifest.xml](./android/src/main/AndroidManifest.xml).
+- **iOS:** Add the required usage descriptions and capabilities in your app’s `Info.plist` (e.g. Bluetooth usage description).
 
 ## API
 

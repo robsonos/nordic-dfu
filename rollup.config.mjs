@@ -17,6 +17,12 @@ export default {
       sourcemap: true,
       inlineDynamicImports: true,
     },
+    {
+      file: 'dist/plugin.esm.js',
+      format: 'es',
+      sourcemap: true,
+      inlineDynamicImports: true,
+    },
   ],
   external: ['@capacitor/core'],
 };
