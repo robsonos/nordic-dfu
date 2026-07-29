@@ -8,6 +8,17 @@
   "files.insertFinalNewline": true,
   "terminal.integrated.scrollback": 10000,
   "terminal.integrated.defaultProfile.osx": "zsh",
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "js/ts.preferences.autoImportFileExcludePatterns": [
+    "@ionic/angular/common",
+    "@ionic/angular/directives",
+    "@ionic/angular/index.d.ts",
+    "@ionic/angular/providers"
+  ],
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  },
+  "xml.format.maxLineWidth": 120,
 
   // Todo tree settings
   "todo-tree.general.tags": ["BUG", "HACK", "FIXME", "TODO", "INFO"],
@@ -27,9 +38,5 @@
   "prettier.printWidth": 120,
 
   // Code spell checker ignored words
-  "cSpell.words": ["Bootloader", "Buttonless", "Softdevice"],
-  "[swift]": {
-    "editor.defaultFormatter": "vknabel.vscode-swiftformat"
-  },
-  "java.configuration.updateBuildConfiguration": "automatic"
+  "cSpell.words": ["Bootloader", "Buttonless", "Softdevice"]
 }

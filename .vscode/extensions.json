@@ -11,7 +11,7 @@
     "vscjava.vscode-java-pack",
     "mpotthoff.vscode-android-webview-debug",
     "nisargjhaveri.ios-debug",
-    "vknabel.vscode-swiftformat",
-    "webnative.webnative"
+    "webnative.webnative",
+    "redhat.vscode-xml"
   ]
 }
