@@ -7,4 +7,6 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
   styleUrls: ['app.component.scss'],
   imports: [IonApp, IonRouterOutlet],
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor() {}
+}
