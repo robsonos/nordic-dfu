@@ -8,6 +8,6 @@
         <service
             android:name=".DfuService"
             android:foregroundServiceType="connectedDevice" />
-            <activity android:name=".NotificationActivity" />
+        <activity android:name=".NotificationActivity" />
     </application>
 </manifest>
