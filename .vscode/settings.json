@@ -18,6 +18,9 @@
   "[xml]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
   },
+  "[swift]": {
+    "editor.defaultFormatter": "swiftlang.swift-vscode"
+  },
   "xml.format.maxLineWidth": 120,
 
   // Todo tree settings

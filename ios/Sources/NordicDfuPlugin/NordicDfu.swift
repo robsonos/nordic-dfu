@@ -1,4 +1,3 @@
-import Capacitor
-import CoreBluetooth
+import Foundation
 
 @objc public class NordicDfu: NSObject {}
