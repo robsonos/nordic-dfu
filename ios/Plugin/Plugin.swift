@@ -2,14 +2,16 @@ import Capacitor
 import NordicDFU
 import CoreBluetooth
 import Foundation
+import os
 import UserNotifications
 
 @objc(NordicDfuPlugin)
-public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDelegate, DFUProgressDelegate, NotificationHandlerProtocol {
+public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDelegate, DFUProgressDelegate, LoggerDelegate, NotificationHandlerProtocol {
     public var dfuChangeEvent: String = "DFUStateChanged"
     var notificationRequestLookup = [String: JSObject]()
     private var manager: CBCentralManager?
     private var dfuStartTime: TimeInterval?
+    private let logger = Logger(subsystem: "community.capacitor.nordic-dfu", category: "DFU")
 
     override public func load() {
         manager = CBCentralManager(delegate: self, queue: nil)
@@ -240,6 +242,8 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
 
         let dfuOptions = call.getObject("dfuOptions")
 
+        let loggingEnabled = dfuOptions?["loggingEnabled"] as? Bool ?? false
+
         if let dfuOption = dfuOptions {
             // if (dfuOptions.has("disableNotification")) {
             //     starter.setDisableNotification(dfuOptions.optBoolean("disableNotification"));
@@ -325,6 +329,9 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
         let peripheral = peripherals[0]
         starter.delegate = self
         starter.progressDelegate = self
+        if loggingEnabled {
+            starter.logger = self
+        }
         _ = starter.start(target: peripheral)
 
         call.resolve()
@@ -363,6 +370,19 @@ public class NordicDfuPlugin: CAPPlugin, CBCentralManagerDelegate, DFUServiceDel
             }
 
             call.resolve(["notifications": permission])
+        }
+    }
+
+    public func logWith(_ level: LogLevel, message: String) {
+        switch level {
+        case .debug, .verbose:
+            logger.debug("\(message, privacy: .public)")
+        case .info, .application:
+            logger.info("\(message, privacy: .public)")
+        case .warning:
+            logger.warning("\(message, privacy: .public)")
+        case .error:
+            logger.error("\(message, privacy: .public)")
         }
     }
 }

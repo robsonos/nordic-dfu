@@ -3,10 +3,22 @@ package com.example.plugin.nordicdfu;
 import android.app.Activity;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import no.nordicsemi.android.dfu.BuildConfig;
 import no.nordicsemi.android.dfu.DfuBaseService;
 
 public class DfuService extends DfuBaseService {
+
+    private static volatile boolean loggingEnabled = false;
+
+    /**
+     * Sets whether the DFU library writes its verbose output to LogCat.
+     *
+     * The service is instantiated by the system rather than by the plugin, so the value is
+     * held statically and must be set before {@code DfuServiceInitiator.start(...)}. Only one
+     * DFU can run at a time, so a single static is sufficient.
+     */
+    public static void setLoggingEnabled(final boolean enabled) {
+        loggingEnabled = enabled;
+    }
 
     @Override
     protected Class<? extends Activity> getNotificationTarget() {
@@ -35,11 +47,10 @@ public class DfuService extends DfuBaseService {
     @Override
     protected boolean isDebug() {
         /*
-         * Here return true if you want the service to print more logs in LogCat.
-         * Library's BuildConfig in current version of Android Studio is always set to
-         * DEBUG=false, so make sure you return true or your.app.BuildConfig.DEBUG here.
+         * Use dfuOptions.loggingEnabled plugin option if you want the service to print 
+         * more logs in LogCat.
          */
-        return BuildConfig.DEBUG;
+        return loggingEnabled;
     }
 
     @Override

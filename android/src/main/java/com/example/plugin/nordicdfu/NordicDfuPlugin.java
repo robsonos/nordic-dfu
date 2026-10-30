@@ -90,6 +90,8 @@ public class NordicDfuPlugin extends Plugin {
             starter.setDeviceName(deviceName);
         }
 
+        boolean loggingEnabled = false;
+
         if (data.has("dfuOptions")) {
             Log.d(LOG_TAG, "dfuOptions: " + data.opt("dfuOptions"));
 
@@ -102,6 +104,10 @@ public class NordicDfuPlugin extends Plugin {
             } catch (JSONException e) {
                 call.reject("Invalid dfuOptions: " + e.getMessage());
                 return;
+            }
+
+            if (dfuOptions.has("loggingEnabled")) {
+                loggingEnabled = dfuOptions.optBoolean("loggingEnabled");
             }
 
             if (dfuOptions.has("disableNotification")) {
@@ -192,6 +198,8 @@ public class NordicDfuPlugin extends Plugin {
         } else {
             starter.setZip(filePath);
         }
+
+        DfuService.setLoggingEnabled(loggingEnabled);
 
         final DfuServiceController controller = starter.start(getContext(), DfuService.class);
 

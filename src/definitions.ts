@@ -370,6 +370,15 @@ export interface DfuOptions {
    * @since 1.0.0
    */
   unsafeExperimentalButtonlessServiceInSecureDfuEnabled?: boolean;
+
+  /**
+   * Set this flag to true to forward the Nordic DFU library's own log messages to the
+   * platform logging system.
+   *
+   * @default false
+   * @since 8.0.0
+   */
+  loggingEnabled?: boolean;
 }
 
 /**
